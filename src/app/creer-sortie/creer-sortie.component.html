@@ -1,0 +1,125 @@
+<div class="card">
+  <div class="card-header text-white bg-info">
+    Créer une sortie
+  </div>
+  <div class="card-body">
+
+    <!-- novalidate fait on sorte que la validation utilisée soit vraiment celle d'angular -->
+    <!-- -->
+    <form novalidate [formGroup]="registerForm" >
+      <!-- ligne 1 nom + campus-->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Nom de la sortie</label>
+          <input type="text" class="form-control" placeholder="nom"
+                  formControlName="nom"
+                  [ngClass] ="{ 'is-invalid' : errorMsg }">
+          <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
+          <!-- ngModel permet l'accès au statut de l'input -->
+          <!-- bien penser au required sinon ça marche pas -->
+          <div class="invalid-feedback">
+            {{ errorMsg}}
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+      <!-- ligne 2 date + ville -->
+
+      <div class="form-row d-flex" >
+        <div class="col-md-6 mb-3">
+          <label for="">Date et heure de la sortie</label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            placeholder="nom"
+            formControlName="dateHeureDebut"
+            [ngClass] ="{ 'is-invalid' : (registerForm.get('dateHeureDebut')?.touched
+            ||  registerForm.get('dateHeureDebut')?.dirty) &&
+            !registerForm.get('dateHeureDebut')?.valid }"
+          >
+          <div class="invalid-feedback">
+            <span *ngIf="registerForm.get('dateHeureDebut')?.errors?.['dateError']">
+              veuillez indiquer une date supérieur à la date du jour
+            </span>
+
+
+            <!-- pour afficher un petit message a la suite de l'input on doit acceder a la propiété .errors
+            -->
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- ligne 3 date + lieu -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3" >
+          <label for="">Date limite d'inscription</label>
+          <input
+            type="date"
+            class="form-control"
+            placeholder=""
+            formControlName="dateLimiteInscription"
+            [ngClass] ="{ 'is-invalid' : (registerForm.get('dateLimiteInscription')?.touched ||
+            registerForm.get('dateLimiteInscription')?.dirty) && !registerForm.get('dateLimiteInscription')?.valid }"
+          >
+          <div class="invalid-feedback">
+            <span *ngIf="registerForm.get('dateLimiteInscription')?.errors?.['dateError']">
+              veuillez indiquer une date supérieur à la date du jour
+            </span>
+
+
+            <!-- pour afficher un petit message a la suite de l'input on doit acceder a la propiété .errors
+            -->
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- ligne 4 nombre de place + rue -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Nombre de places</label>
+          <input type="text" class="form-control" placeholder=""  formControlName="nbInscriptionsMax">
+        </div>
+
+
+      </div>
+
+      <!-- ligne 5 duree + codePostal -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Duree</label>
+          <input type="text" class="form-control" placeholder=""  formControlName="duree">
+        </div>
+
+
+      </div>
+
+      <!-- ligne 6 description/infos + latitude et longitude  -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Description et infos</label>
+          <input type="text" class="form-control" placeholder=""  formControlName="infosSortie">
+
+        </div>
+
+
+      </div>
+
+      <!-- ligne 7 bouton enregistrer publier annuler -->
+      <div class="form-row d-flex">
+        <button class="btn btn-info" (click)="onSave()" >Enregistrer</button>
+        <button class="btn btn-info" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
