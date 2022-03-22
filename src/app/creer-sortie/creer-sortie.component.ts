@@ -46,7 +46,7 @@ export class CreerSortieComponent implements OnInit {
   //methode reactive
   public registerForm : FormGroup;
   public postId : any;
-  public lstLieux : ISortie[] = [];
+  public lstLieux : ILieu[] = [];
 
 
   public sortie : Sortie = new Sortie();
@@ -86,14 +86,14 @@ export class CreerSortieComponent implements OnInit {
       nbInscriptionsMax : '9',
       duree : '45',
       codePostal : '',
-      infosSortie : 'coucou pas d\'infos,'
+      infosSortie : 'coucou pas d\'infos,',
 
       //rue : '',
       //latitude: '',
       //longitude: '',
       //ville : '',
       //campus : '',
-      //lieu : '',
+      lieu : '',
     })
     //this.defaultValueForm();
     //abonnement a l'observateur
@@ -106,6 +106,7 @@ export class CreerSortieComponent implements OnInit {
     ).subscribe( val  => {
       this.setMessage(nomControle);
     });
+    this.getLieux();
   }
 
   // generer des valeurs par défaut
@@ -115,7 +116,7 @@ export class CreerSortieComponent implements OnInit {
       nom : 'banana',
       //campus : "",
       //ville : '',
-      lieu : '',
+      //lieu : 'Choisir un lieu',
       nbInscriptionsMax : 9,
       //rue : "che poa",
       duree : 60,
@@ -132,7 +133,7 @@ export class CreerSortieComponent implements OnInit {
    */
   public onSave(){
     console.log(this.registerForm.value);
-    const url = "http://localhost/api_sortie/public/api/sortie/";
+    const url = "http://localhost/APISortie/public//api/sortie/";
     this.sd.createSortie(url, this.registerForm.value).subscribe(data =>
       this.postId = data.id)
     console.log(this.postId)
@@ -140,14 +141,12 @@ export class CreerSortieComponent implements OnInit {
   }
 
   public getLieux(){
-    const url = "http://localhost/api_sortie/public/api/lieu/";
+    const url = "http://localhost/APISortie/public/api/lieux/";
     this.lieuData.getLieux(url).subscribe(
       data =>{
-
+        console.log(data)
         for( let element of data){
-          /**
-           * TODO modifier de sorte a ne pas utiliser le ignore
-           */
+          console.log(element)
           this.lstLieux.push(element);
         }
       }

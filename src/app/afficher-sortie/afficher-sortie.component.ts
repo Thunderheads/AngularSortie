@@ -21,7 +21,7 @@ export class AfficherSortieComponent implements OnInit {
 
   ngOnInit(): void {
 
-   this.sd.getSortie('http://localhost/api_sortie/public/api/sortie').
+   this.sd.getSortie('http://localhost/APISortie/public/api/sortie').
     subscribe(
       data => {
         console.log(data);
