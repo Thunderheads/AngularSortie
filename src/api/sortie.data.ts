@@ -17,6 +17,7 @@ const httpOptions = {
 
 export class SortieData {
 
+
   constructor(private http: HttpClient) { }
 
   /**

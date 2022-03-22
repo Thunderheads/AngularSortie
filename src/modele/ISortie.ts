@@ -1,5 +1,5 @@
 /**
- * Interface en charge de typer les données reçu
+ * Interface en charge de typer les données reçues
  */
 export interface ISortie {
 

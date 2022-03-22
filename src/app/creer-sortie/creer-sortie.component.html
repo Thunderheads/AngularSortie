@@ -23,8 +23,12 @@
 
 
         </div>
-
-
+        <div class="col-md-6 mb-3">
+        <select  friendly-name="Model" class="form-control" ng-required="true" >
+          <option>Choisir un lieu</option>
+          <option *ngFor='let lieu of lstLieu' value="{{lieu.id}}" formControlName="lieu">{{lieu.nom}}</option>
+        </select>
+        </div>
       </div>
 
 

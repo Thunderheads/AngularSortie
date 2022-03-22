@@ -8,6 +8,8 @@ import {Ville} from "../../modele/Ville";
 import {debounceTime} from "rxjs";
 import {ISortie} from "../../modele/ISortie";
 import {SortieData} from "../../api/sortie.data";
+import {ILieu} from "../../modele/ILieu";
+import {LieuData} from "../../api/lieu.data";
 
 
 
@@ -22,6 +24,8 @@ function toTimestamp(strDate : any){
 }
 
 function compareDate() : ValidatorFn{
+
+  // key de type string
   return (c : AbstractControl) : {[key:string] : boolean} | null => {
 
     if((toTimestamp(c.value) < Date.now())){
@@ -42,10 +46,11 @@ export class CreerSortieComponent implements OnInit {
   //methode reactive
   public registerForm : FormGroup;
   public postId : any;
+  public lstLieux : ISortie[] = [];
 
 
   public sortie : Sortie = new Sortie();
-  constructor(private formBuilder : FormBuilder, private sd: SortieData) {
+  constructor(private formBuilder : FormBuilder, private sd: SortieData, private lieuData :LieuData) {
       // creation des differentes instances des objets
       this.sortie.lieu = new Lieu();
       this.sortie.lieu.ville = new Ville();
@@ -93,6 +98,7 @@ export class CreerSortieComponent implements OnInit {
     //this.defaultValueForm();
     //abonnement a l'observateur
     // ! - Non-null assertion operator
+
     let nomControle = this.registerForm.get('nom')!;
     nomControle.valueChanges.pipe(
       //permet de définir un temps avant de lancer la suite
@@ -108,8 +114,8 @@ export class CreerSortieComponent implements OnInit {
     this.registerForm.setValue({
       nom : 'banana',
       //campus : "",
-      //ville : 'Rennes',
-      //lieu : 'places des lices',
+      //ville : '',
+      lieu : '',
       nbInscriptionsMax : 9,
       //rue : "che poa",
       duree : 60,
@@ -126,11 +132,27 @@ export class CreerSortieComponent implements OnInit {
    */
   public onSave(){
     console.log(this.registerForm.value);
-    const url = "http://localhost/api_sortie/public/api/sortie/"
+    const url = "http://localhost/api_sortie/public/api/sortie/";
     this.sd.createSortie(url, this.registerForm.value).subscribe(data =>
       this.postId = data.id)
     console.log(this.postId)
     ;
+  }
+
+  public getLieux(){
+    const url = "http://localhost/api_sortie/public/api/lieu/";
+    this.lieuData.getLieux(url).subscribe(
+      data =>{
+
+        for( let element of data){
+          /**
+           * TODO modifier de sorte a ne pas utiliser le ignore
+           */
+          this.lstLieux.push(element);
+        }
+      }
+
+    )
   }
 
 
