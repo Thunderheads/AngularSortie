@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {ISortie} from "../modele/ISortie";
-import {ILieu} from "../modele/ILieu";
+import {ISortie} from "../modele/interface/ISortie";
+import {ILieu} from "../modele/interface/ILieu";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -25,6 +25,15 @@ export class LieuData {
    * @param url
    */
   public getLieux(url: string): Observable<ILieu> {
+
+    return this.http.get<ILieu>(url, httpOptions)
+  }
+
+  /**
+   * fonction en charge de requeter l'api symfony pour en extraire un lieu
+   * @param url
+   */
+  public getLieu(url: string): Observable<ILieu> {
 
     return this.http.get<ILieu>(url, httpOptions)
   }

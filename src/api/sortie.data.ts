@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ISortie} from "../modele/ISortie";
+import { ISortie} from "../modele/interface/ISortie";
 
 const httpOptions = {
   headers: new HttpHeaders(

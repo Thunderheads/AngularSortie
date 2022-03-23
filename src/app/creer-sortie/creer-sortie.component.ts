@@ -6,10 +6,12 @@ import {Campus} from "../../modele/Campus";
 import {Etat} from "../../modele/Etat";
 import {Ville} from "../../modele/Ville";
 import {debounceTime} from "rxjs";
-import {ISortie} from "../../modele/ISortie";
+import {ISortie} from "../../modele/interface/ISortie";
 import {SortieData} from "../../api/sortie.data";
-import {ILieu} from "../../modele/ILieu";
+import {ILieu} from "../../modele/interface/ILieu";
 import {LieuData} from "../../api/lieu.data";
+import {CampusData} from "../../api/campus.data";
+import {ICampus} from "../../modele/interface/ICampus";
 
 
 
@@ -47,10 +49,14 @@ export class CreerSortieComponent implements OnInit {
   public registerForm : FormGroup;
   public postId : any;
   public lstLieux : ILieu[] = [];
+  public lstCampus : ICampus[] = [];
 
 
   public sortie : Sortie = new Sortie();
-  constructor(private formBuilder : FormBuilder, private sd: SortieData, private lieuData :LieuData) {
+  constructor(private formBuilder : FormBuilder,
+              private sd: SortieData,
+              private lieuData :LieuData,
+              private campusData : CampusData) {
       // creation des differentes instances des objets
       this.sortie.lieu = new Lieu();
       this.sortie.lieu.ville = new Ville();
@@ -88,11 +94,11 @@ export class CreerSortieComponent implements OnInit {
       codePostal : '',
       infosSortie : 'coucou pas d\'infos,',
 
-      //rue : '',
-      //latitude: '',
+      rue : '',
+      latitude: '',
       //longitude: '',
-      //ville : '',
-      //campus : '',
+      ville : '',
+      campus : '',
       lieu : '',
     })
     //this.defaultValueForm();
@@ -107,6 +113,7 @@ export class CreerSortieComponent implements OnInit {
       this.setMessage(nomControle);
     });
     this.getLieux();
+    this.getCampus();
   }
 
   // generer des valeurs par défaut
@@ -115,14 +122,14 @@ export class CreerSortieComponent implements OnInit {
     this.registerForm.setValue({
       nom : 'banana',
       //campus : "",
-      //ville : '',
-      //lieu : 'Choisir un lieu',
+      ville : '',
+      lieu : 'Choisir un lieu',
       nbInscriptionsMax : 9,
-      //rue : "che poa",
+      rue : "che poa",
       duree : 60,
-      //codePostal : 35000,
+      codePostal : 35000,
       infosSortie : "sortie cool",
-      //latitude: "",
+      latitude: "",
       //longitude: "",
 
     })
@@ -133,20 +140,45 @@ export class CreerSortieComponent implements OnInit {
    */
   public onSave(){
     console.log(this.registerForm.value);
-    const url = "http://localhost/APISortie/public//api/sortie/";
+    const url = "http://localhost/APISortie/public/api/sortie/";
     this.sd.createSortie(url, this.registerForm.value).subscribe(data =>
       this.postId = data.id)
     console.log(this.postId)
     ;
   }
 
-  public getLieux(){
-    const url = "http://localhost/APISortie/public/api/lieux/";
-    this.lieuData.getLieux(url).subscribe(
+  /**
+   * fonction en charge de mettre a jour les informations des champs quand un lieu est choisit
+   *
+   */
+  public setValues(){
+    //permet de recuperer ma valeur du lieu
+    console.log(this.registerForm.get('lieu')?.value)
+    let url = "http://localhost/APISortie/public/api/lieu/";
+    this.lieuData.getLieu(url+=this.registerForm.get('lieu')?.value).subscribe(
       data =>{
         console.log(data)
+        this.registerForm.patchValue({ville : data.ville.nom})
+        this.registerForm.patchValue({rue : data.rue})
+        this.registerForm.patchValue({codePostal : data.ville.codePostal})
+        this.registerForm.patchValue({latitude : data.latitude})
+      }
+
+    )
+    console.log('coucou');
+
+  }
+
+  /**
+   * Fonction en charge de recupérer la liste des lieux
+   */
+  public getLieux(){
+
+    const url = "http://localhost/APISortie/public/api/lieux/";
+
+    this.lieuData.getLieux(url).subscribe(
+      data =>{
         for( let element of data){
-          console.log(element)
           this.lstLieux.push(element);
         }
       }
@@ -155,6 +187,17 @@ export class CreerSortieComponent implements OnInit {
   }
 
 
+  public getCampus() {
+    const url = "http://localhost/APISortie/public/api/campus"
+    this.campusData.getCampus(url).subscribe(
+      data => {
+        for (let element of data) {
+          this.lstCampus.push(element);
+        }
+
+      }
+    )
+  }
   //tester la date
   public dateValue(){
     //recupere la date stocker
@@ -163,12 +206,13 @@ export class CreerSortieComponent implements OnInit {
     //console.log(myMoment.getMilliseconds())
   }
 
+
   /**
    * Fonction en charge d'afficher un message d'erreur
    * @param val
    * @private
    */
-  private setMessage(val : AbstractControl) : void{
+  private setMessage(val : AbstractControl) : void {
       this.errorMsg ="";
       if((val.touched || val.dirty) && val.errors){
         // permet de recuperer les clés des erreurs génerées
@@ -180,5 +224,7 @@ export class CreerSortieComponent implements OnInit {
         this.errorMsg = (this.validationErrorsMessages as any)[Object.keys(val.errors)[0]];
       }
   }
+
+
 
 }

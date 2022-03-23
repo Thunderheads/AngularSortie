@@ -4,7 +4,7 @@ import {Etat} from "./Etat";
 import {Campus} from "./Campus";
 import {Lieu} from "./Lieu";
 import {Participant} from "./Participant";
-import {ISortie} from "./ISortie";
+import {ISortie} from "./interface/ISortie";
 
 export class Sortie implements ISortie{
 
