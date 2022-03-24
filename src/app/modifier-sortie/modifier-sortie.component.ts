@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { SortieData } from 'src/api/sortie.data';
+import { SortieData } from 'src/services/api/sortie.data';
 import { ISortie } from 'src/modele/ISortie';
 
 @Component({
@@ -34,7 +34,7 @@ export class ModifierSortieComponent implements OnInit {
   /**
    * Fonction en charge d'initialiser le formulaire de modification
    */
-  public initForm() {
+  public initForm() : void {
     this.sortieForm = this.formBuilder.group({
       nom : [this.selectedSortie.nom, [Validators.required, Validators.minLength(4) ]],
       dateHeureDebut : [this.selectedSortie.dateHeureDebut, Validators.required],
@@ -62,7 +62,7 @@ export class ModifierSortieComponent implements OnInit {
   /**
    * Fonction en charge de modifier une sortie en base de données
    */
-     public onUpdate(){
+     public onUpdate() : void {
       console.log('sortieForm values ' , this.sortieForm.value);
       const url = "http://localhost/APIsortie/public/api/sortie/" + this.selectedSortie?.id
       this.sd.updateSortie(url, this.sortieForm.value).subscribe(data =>

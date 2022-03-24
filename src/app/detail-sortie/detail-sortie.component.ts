@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SortieData } from 'src/api/sortie.data';
+import { SortieData } from 'src/services/api/sortie.data';
 import { ISortie } from 'src/modele/ISortie';
 
 @Component({

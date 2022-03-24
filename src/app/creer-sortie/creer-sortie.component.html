@@ -14,12 +14,12 @@
           <label for="">Nom de la sortie</label>
           <input type="text" class="form-control" placeholder="nom"
                   formControlName="nom"
-                  [ngClass] ="{ 'is-invalid' : errorMsg.name }">
+                  [ngClass] ="{ 'is-invalid' : errorMsg }">
           <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
           <!-- ngModel permet l'accès au statut de l'input -->
           <!-- bien penser au required sinon ça marche pas -->
           <div class="invalid-feedback">
-            {{ errorMsg.name}}
+            {{ errorMsg }}
           </div>
         </div>
           <div class="col-md-6 mb-3">

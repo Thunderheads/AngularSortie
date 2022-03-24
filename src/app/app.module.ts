@@ -9,7 +9,7 @@ import { AnnulerSortieComponent } from './annuler-sortie/annuler-sortie.componen
 import { ModifierSortieComponent } from './modifier-sortie/modifier-sortie.component';
 import { AfficherSortieComponent } from './afficher-sortie/afficher-sortie.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {SortieData} from "../api/sortie.data";
+import {SortieData} from "../services/api/sortie.data";
 import { HttpClientModule } from '@angular/common/http';
 import { DetailSortieComponent } from './detail-sortie/detail-sortie.component';
 import { registerLocaleData } from '@angular/common';

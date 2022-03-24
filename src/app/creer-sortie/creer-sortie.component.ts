@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {Sortie} from "../../modele/Sortie";
-import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {Lieu} from "../../modele/Lieu";
 import {Campus} from "../../modele/Campus";
 import {Etat} from "../../modele/Etat";
 import {Ville} from "../../modele/Ville";
-import {debounceTime} from "rxjs";
-import {ISortie} from "../../modele/interface/ISortie";
-import {SortieData} from "../../api/sortie.data";
+import {SortieData} from "../../services/api/sortie.data";
 import {ILieu} from "../../modele/interface/ILieu";
-import {LieuData} from "../../api/lieu.data";
-import {CampusData} from "../../api/campus.data";
+import {LieuData} from "../../services/api/lieu.data";
+import {CampusData} from "../../services/api/campus.data";
 import {ICampus} from "../../modele/interface/ICampus";
-import {ErreurMessage} from "../../erreur/erreurMessage";
+import {ErreurMessage} from "../../services/erreur/erreurMessage";
 
 
 
@@ -30,14 +28,12 @@ export class CreerSortieComponent implements OnInit {
 
   //methode reactive
   // attribut pour sauvegarder les messages d'erreurs
-  //public errorMsg : string;
-  public errorMsg = {
-    'name' : "",
-  }
+
   public registerForm : FormGroup;
   public postId : any;
   public lstLieux : ILieu[] = [];
   public lstCampus : ICampus[] = [];
+  public errorMsg : string;
 
 
   public sortie : Sortie = new Sortie();
@@ -85,13 +81,10 @@ export class CreerSortieComponent implements OnInit {
     //this.defaultValueForm();
     //abonnement a l'observateur
     // ! - Non-null assertion operator
-    let nomControle = this.registerForm.get('nom')!;
-    nomControle.valueChanges.pipe(
-      //permet de définir un temps avant de lancer la suite
-      debounceTime(1000)
-    ).subscribe( val  => {
-      this.setMessage(nomControle);
-    });
+
+    // Controles du formulaire
+    this.errorMsg = this.errorMessages.formControlName(this.registerForm.get('nom')!);
+
     this.getLieux();
     this.getCampus();
   }
@@ -177,26 +170,6 @@ export class CreerSortieComponent implements OnInit {
 
       }
     )
-  }
-
-  /**
-   * Fonction en charge d'afficher un message d'erreur
-   * @param val
-   * @private
-   */
-  private setMessage(val : AbstractControl) : void {
-      //this.errorMsg ="";
-      console.log(this.errorMsg.name="")
-      if((val.touched || val.dirty) && val.errors){
-        // permet de recuperer les clés des erreurs génerées
-        //console.log(this.validationErrorsMessages['required'])
-        // ma façon :
-        // dans object.key a la position 0 on a le type d'erreur renvoyée (à chaque fois on renvoie une seul erreur donc ça changera pas elle sera toujours a la position 0)
-        // le as any est nécessaire sinon on peut pas accéder à l'erreur correspondante dans le tableau crée plus haut
-        // ainsi recuperer la clé nous donne accés à la valeur indexée dans le tableau qu'on stocke dans errorMsg
-        this.errorMsg.name = (this.errorMessages.validationNameMsg as any)[Object.keys(val.errors)[0]];
-        console.log(this.errorMsg.name)
-      }
   }
 
 }

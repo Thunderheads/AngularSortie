@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ILieu} from "../modele/interface/ILieu";
-import {ICampus} from "../modele/interface/ICampus";
+import {ILieu} from "../../modele/interface/ILieu";
+import {ICampus} from "../../modele/interface/ICampus";
 
 const httpOptions = {
   headers: new HttpHeaders(
