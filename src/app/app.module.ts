@@ -11,6 +11,11 @@ import { AfficherSortieComponent } from './afficher-sortie/afficher-sortie.compo
 import {ReactiveFormsModule} from "@angular/forms";
 import {SortieData} from "../api/sortie.data";
 import { HttpClientModule } from '@angular/common/http';
+import { DetailSortieComponent } from './detail-sortie/detail-sortie.component';
+import { registerLocaleData } from '@angular/common';
+import localFr from '@angular/common/locales/fr';
+
+registerLocaleData(localFr, 'fr')
 
 
 @NgModule({
@@ -21,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     AnnulerSortieComponent,
     ModifierSortieComponent,
     AfficherSortieComponent,
+    DetailSortieComponent,
 
   ],
   imports: [

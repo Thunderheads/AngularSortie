@@ -85,7 +85,6 @@ export class CreerSortieComponent implements OnInit {
     //this.defaultValueForm();
     //abonnement a l'observateur
     // ! - Non-null assertion operator
-
     let nomControle = this.registerForm.get('nom')!;
     nomControle.valueChanges.pipe(
       //permet de définir un temps avant de lancer la suite
@@ -180,7 +179,6 @@ export class CreerSortieComponent implements OnInit {
     )
   }
 
-
   /**
    * Fonction en charge d'afficher un message d'erreur
    * @param val
@@ -200,7 +198,5 @@ export class CreerSortieComponent implements OnInit {
         console.log(this.errorMsg.name)
       }
   }
-
-
 
 }

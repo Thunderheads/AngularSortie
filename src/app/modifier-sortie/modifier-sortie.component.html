@@ -1,1 +1,91 @@
-<p>modifier-sortie works!</p>
+<div class="card">
+  <div class="card-header text-white bg-info">
+    Modifier une sortie
+  </div>
+  <div class="card-body">
+
+
+    <!-- novalidate fait on sorte que la validation utilisée soit vraiment celle d'angular -->
+    <!-- -->
+    <form novalidate (ngSubmit)="onUpdate()" [formGroup]="sortieForm" *ngIf="selectedSortie">
+
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="nom">Nom de la sortie</label>
+          <input type="text" class="form-control" id="nom"
+          formControlName="nom" />
+        </div>
+      </div>
+
+
+      <div class="form-row d-flex" >
+        <div class="col-md-6 mb-3">
+          <label for="dateSortie">Date et heure de la sortie</label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            id="dateSortie"
+            formControlName="dateHeureDebut" />
+          </div>
+        </div>
+
+
+
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3" >
+          <label for="dateInscription">Date limite d'inscription</label>
+          <input
+            type="date"
+            class="form-control"
+            id="dateInscription"
+            formControlName="dateLimiteInscription"/>
+        </div>
+      </div>
+
+
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="nbPlace">Nombre de places</label>
+          <input type="text" class="form-control" id="nbPlace"
+          formControlName="nbInscriptionsMax"/>
+        </div>
+      </div>
+
+
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="duree">Duree</label>
+          <input type="text" class="form-control" id="duree"
+          formControlName = "duree"/>
+        </div>
+      </div>
+
+
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="description">Description et infos</label>
+          <textarea class="form-control" id="description"
+          formControlName = "infosSortie">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- ligne 7 bouton enregistrer pour modifier et bouton annuler -->
+      <div class="form-row d-flex">
+        <button class="btn btn-info" type="submit" >
+          Enregistrer
+        </button>
+
+        <button class="btn btn-outline-secondary" type="button" [routerLink]="['/sortie/afficher']">
+          Annuler
+        </button>
+
+        <button class="btn btn-outline-danger" type="button" >
+          Supprimer
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

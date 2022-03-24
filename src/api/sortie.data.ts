@@ -17,7 +17,6 @@ const httpOptions = {
 
 export class SortieData {
 
-
   constructor(private http: HttpClient) { }
 
   /**
@@ -30,6 +29,15 @@ export class SortieData {
   }
 
   /**
+   * fonction en charge de requeter l'api symfony pour en extraire une sorties
+   * @param url
+   */
+     public getSortieDetail(url: string): Observable<ISortie> {
+
+      return this.http.get<ISortie>(url, httpOptions)
+    }
+
+  /**
    * Fonction en charge d'envoyer la nouvelle sortie en base de données
    * @param url
    */
@@ -37,4 +45,13 @@ export class SortieData {
 
     return this.http.post<ISortie>(url, sortie)
   }
+
+  /**
+   * Fonction en charge d'envoyer la modification d'une sortie en base de données
+   * @param url
+   */
+     public updateSortie(url: string, sortie : ISortie): Observable<ISortie> {
+
+      return this.http.put<ISortie>(url, sortie)
+    }
 }

@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { SortieData } from 'src/api/sortie.data';
+import { ISortie } from 'src/modele/ISortie';
 
 @Component({
   selector: 'app-modifier-sortie',
@@ -7,9 +11,72 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModifierSortieComponent implements OnInit {
 
-  constructor() { }
+  public selectedSortie : ISortie;
+  public sortieForm : FormGroup;
+  public putId : any;
+
+  constructor(
+    private route : ActivatedRoute,
+    private formBuilder : FormBuilder,
+    private sd : SortieData
+    ) { }
 
   ngOnInit(): void {
+<<<<<<< HEAD
+    // Récupération de la sortie correspondant à l'id passé en paramètre
+    this.sd.getSortieDetail('http://localhost/APIsortie/public/api/sortie/' + this.route.snapshot.paramMap.get('id')).
+    subscribe(
+      data => {
+        this.selectedSortie = data;
+        console.log('selectedSortie ' , this.selectedSortie);
+      });
+=======
+>>>>>>> 1a2e3ad (modifier-sortie)
+
+    // Récupération du paramètre id de l'URL
+    this.route.paramMap.subscribe(param => {
+      this.putId = param.get('id');
+      this.initFormWithSortie(this.putId);
+    })
+
+    }
+
+  /**
+   * Fonction en charge d'initialiser le formulaire de modification
+   */
+  public initForm() {
+    this.sortieForm = this.formBuilder.group({
+      nom : [this.selectedSortie.nom, [Validators.required, Validators.minLength(4) ]],
+      dateHeureDebut : [this.selectedSortie.dateHeureDebut, Validators.required],
+      duree : [this.selectedSortie.duree, Validators.required],
+      dateLimiteInscription : [this.selectedSortie.dateLimiteInscription, Validators.required],
+      nbInscriptionsMax : [this.selectedSortie.nbInscriptionsMax, Validators.required],
+      infosSortie : [this.selectedSortie.infosSortie, Validators.required]
+    })
+  }
+
+  /**
+  * Fonction en charge de chercher une sortie par son id
+  * et d'initialiser un formulaire pré-rempli de ces valeurs
+  */
+  public initFormWithSortie(id : number) : void {
+    this.sd.getSortieDetail('http://localhost/api_sortie/public/api/sortie/' + id).
+      subscribe(
+        //TODO: alléger la fonction
+        data => {
+          this.selectedSortie = data;
+          this.initForm();
+        });
+  }
+
+  /**
+   * Fonction en charge de modifier une sortie en base de données
+   */
+     public onUpdate(){
+      console.log('sortieForm values ' , this.sortieForm.value);
+      const url = "http://localhost/APIsortie/public/api/sortie/" + this.selectedSortie?.id
+      this.sd.updateSortie(url, this.sortieForm.value).subscribe(data =>
+        this.putId = data.id)
   }
 
 }

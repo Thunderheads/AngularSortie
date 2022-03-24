@@ -7,6 +7,7 @@ import {CreerSortieComponent} from "../app/creer-sortie/creer-sortie.component";
 import {ModifierSortieComponent} from "../app/modifier-sortie/modifier-sortie.component";
 import {AfficherSortieComponent} from "../app/afficher-sortie/afficher-sortie.component";
 import {AnnulerSortieComponent} from "../app/annuler-sortie/annuler-sortie.component";
+import { DetailSortieComponent } from 'src/app/detail-sortie/detail-sortie.component';
 
 const routes: Routes =[
   //chemin d'accès aux différents composants
@@ -14,9 +15,11 @@ const routes: Routes =[
   { path : "", component: AppComponent},
   { path : 'home', component : HomeComponent},
   { path : 'sortie/creer', component : CreerSortieComponent},
-  { path : 'sortie/modifier', component : ModifierSortieComponent},
+  { path : 'sortie/modifier/:id', component : ModifierSortieComponent},
+  { path : 'sortie/detail/:id', component : DetailSortieComponent },
   { path : 'sortie/annuler', component : AnnulerSortieComponent},
-  { path : 'sortie/afficher', component : AfficherSortieComponent}
+  { path : 'sortie/afficher', component : AfficherSortieComponent},
+  { path : '**', redirectTo : 'home', pathMatch: 'full' }
 ];
 
 

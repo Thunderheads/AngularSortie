@@ -7,9 +7,18 @@
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link text-light" href="#">Accueil</a>
-      <a class="nav-item nav-link text-light" href="#">Mon profil</a>
-      <a class="nav-item nav-link text-light mr-5" href="#">Se déconnecter</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-item nav-link text-light" [routerLink]="['home']">Accueil</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-item nav-link text-light" [routerLink]="['sortie/afficher']">Voir la liste des sorties</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-item nav-link text-light" [routerLink]="['sortie/creer']">Créer une sortie</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-item nav-link text-light mr-5">Se déconnecter</a>
+      </li>
     </div>
   </div>
 </nav>

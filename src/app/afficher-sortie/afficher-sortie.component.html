@@ -1,13 +1,52 @@
-<p>afficher-sortie works!ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
+<div class="row row-cols-1 row-cols-md-1">
+  <div class="col mb-4" *ngFor="let data of datas">
+    <div class="card">
+      <div class="card-header text-white bg-info">
+        <span> {{ data.id }} - </span>
+        <span> {{ data.nom}} </span>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Date et heure de début : </span>
+          <span class="col-md-8"> {{ data.dateHeureDebut | date: 'EEEE dd-MM-yyyy HH:mm' : 'UTC+1' : 'fr' }} </span>
+        </p>
 
-<ul *ngFor="let data of datas">
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Date limite d'inscription: </span>
+          <span class="col-md-8"> {{ data.dateLimiteInscription | date : 'EEEE dd-MM-yyyy' : 'UTC+1' : 'fr'}} </span>
+        </p>
 
-  <li> {{ data.id}}</li>
-  <li> {{ data.infosSortie}}</li>
-  <li> {{ data.dateHeureDebut}}</li>
-  <li> {{ data.dateLimiteInscription}}</li>
-  <li> {{ data.duree}}</li>
-  <li> {{ data.nbInscriptionsMax}}</li>
-  <li> {{ data.nom}}</li>
-</ul>
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Durée de la sortie: </span>
+          <span class="col-md-8"> {{ data.duree }} </span>
+        </p>
+
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Nombre de place: </span>
+          <span class="col-md-8"> {{ data.nbInscriptionsMax }} </span>
+        </p>
+
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Infos: </span>
+          <span class="col-md-8"> {{ data.infosSortie }} </span>
+        </p>
+
+      </div> <!-- card body-->
+
+      <div class="card-footer d-flex">
+        <button class="btn btn-secondary"  [routerLink]="['/sortie/detail', data.id]"
+          (click)="onSelectSortie(data)">
+            Afficher le détail
+        </button>
+
+        <button class="btn btn-secondary ms-3" [routerLink]="['/sortie/modifier', data.id]"
+            (click)="onSelectSortie(data)">
+              Modifier la sortie
+        </button>
+      </div> <!-- card footer-->
+    </div> <!-- card -->
+  </div> <!-- *ngFor-->
+</div> <!-- row -->
+
+<app-detail-sortie [selectedSortie] = "selectedSortie"></app-detail-sortie>
 
