@@ -1,12 +1,46 @@
 <div class="content-area">
   <div *ngIf="selectedSortie">
-    <h3>  {{selectedSortie.id}} </h3>
-    <p> {{selectedSortie.nom}}</p>
-    <p> {{selectedSortie.dateHeureDebut}}</p>
-    <p> {{selectedSortie.duree}}</p>
-    <p> {{selectedSortie.dateLimiteInscription}}</p>
-    <p> {{selectedSortie.nbInscriptionsMax}}</p>
-    <p> {{selectedSortie.infosSortie}}</p>
-  </div>
+    <div class="card-header text-white bg-info">
+      <span class="col-md-4"> Nom :</span>
+      <span class="col-md-8"> {{selectedSortie.nom | uppercase}} </span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-4"> Date et heure de début :</div>
+            <div class="col-md-8"> {{selectedSortie.dateHeureDebut  | date : 'EEEE dd-MM-yyyy HH:mm' : 'UTC+1' : 'fr'}} </div>
+          </div>
 
+          <div class="row">
+            <div class="col-md-4"> Durée :</div>
+            <div class="col-md-8"> {{selectedSortie.duree}} </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4"> Date limite d'inscription :</div>
+            <div class="col-md-8"> {{selectedSortie.dateLimiteInscription  | date : 'EEEE dd-MM-yyyy' : 'UTC+1' : 'fr'}} </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4"> Nombre de place :</div>
+            <div class="col-md-8"> {{selectedSortie.nbInscriptionsMax}} </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4"> Détail :</div>
+            <div class="col-md-8"> {{selectedSortie.infosSortie}} </div>
+          </div>
+        </div>
+      </div> <!-- row-->
+    </div> <!-- card body-->
+
+    <div class="card-footer">
+      <button class="btn btn-outline-secondary d-flex bg-secondary text-white" [routerLink]="['/sortie/afficher']">
+        Retour à la liste des sorties
+      </button>
+
+    </div> <!-- card-footer -->
+
+   </div> <!-- *ngIf-->
 </div> <!-- content area-->

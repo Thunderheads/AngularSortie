@@ -1,58 +1,52 @@
-<div class="card" *ngFor="let data of datas">
-  <div class="card-header text-white bg-info">
-    <span> {{ data.id }} - </span>
-    <span> {{ data.nom}}</span>
-  </div>
+<div class="row row-cols-1 row-cols-md-1">
+  <div class="col mb-4" *ngFor="let data of datas">
+    <div class="card">
+      <div class="card-header text-white bg-info">
+        <span> {{ data.id }} - </span>
+        <span> {{ data.nom}} </span>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Date et heure de début : </span>
+          <span class="col-md-8"> {{ data.dateHeureDebut | date: 'EEEE dd-MM-yyyy HH:mm' : 'UTC+1' : 'fr' }} </span>
+        </p>
 
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-4"> Date et heure de début: </div>
-          <div class="col-md-8"> {{ data.dateHeureDebut | date: 'EEEE dd-MM-yyyy HH:mm' : 'UTC+1' : 'fr' }} </div>
-        </div>
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Date limite d'inscription: </span>
+          <span class="col-md-8"> {{ data.dateLimiteInscription | date : 'EEEE dd-MM-yyyy' : 'UTC+1' : 'fr'}} </span>
+        </p>
 
-        <div class="row">
-          <div class="col-md-4"> Date limite d'inscription: </div>
-          <div class="col-md-8"> {{ data.dateLimiteInscription | date : 'EEEE dd-MM-yyyy' : 'UTC+1' : 'fr'}} </div>
-        </div>
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Durée de la sortie: </span>
+          <span class="col-md-8"> {{ data.duree }} </span>
+        </p>
 
-        <div class="row">
-          <div class="col-md-4"> Durée de la sortie: </div>
-          <div class="col-md-8"> {{ data.duree}} </div>
-        </div>
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Nombre de place: </span>
+          <span class="col-md-8"> {{ data.nbInscriptionsMax }} </span>
+        </p>
 
-        <div class="row">
-          <div class="col-md-4"> Nombre de place: </div>
-          <div class="col-md-8"> {{ data.nbInscriptionsMax}} </div>
-        </div>
+        <p class="card-text">
+          <span class="col-md-4 font-weight-bold"> Infos: </span>
+          <span class="col-md-8"> {{ data.infosSortie }} </span>
+        </p>
 
-        <div class="row">
-          <div class="col-md-4"> Infos: </div>
-          <div class="col-md-8"> {{ data.infosSortie }} </div>
-        </div>
+      </div> <!-- card body-->
 
-
-        <button class="btn btn-secondary"
-                [routerLink]="['/sortie/detail', data.id]"
-                (click)="onSelectSortie(data)">
-
-                Afficher le détail
-
+      <div class="card-footer d-flex">
+        <button class="btn btn-secondary"  [routerLink]="['/sortie/detail', data.id]"
+          (click)="onSelectSortie(data)">
+            Afficher le détail
         </button>
 
-        <button class="btn btn-secondary"
-                [routerLink]="['/sortie/modifier', data.id]"
-                (click)="onSelectSortie(data)">
-
-                Modifier la sortie
-
-         </button>
-      </div>
-    </div>
-
-  </div>
-</div>
+        <button class="btn btn-secondary ms-3" [routerLink]="['/sortie/modifier', data.id]"
+            (click)="onSelectSortie(data)">
+              Modifier la sortie
+        </button>
+      </div> <!-- card footer-->
+    </div> <!-- card -->
+  </div> <!-- *ngFor-->
+</div> <!-- row -->
 
 <app-detail-sortie [selectedSortie] = "selectedSortie"></app-detail-sortie>
 
