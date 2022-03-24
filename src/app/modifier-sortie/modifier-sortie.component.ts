@@ -22,16 +22,6 @@ export class ModifierSortieComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-<<<<<<< HEAD
-    // Récupération de la sortie correspondant à l'id passé en paramètre
-    this.sd.getSortieDetail('http://localhost/APIsortie/public/api/sortie/' + this.route.snapshot.paramMap.get('id')).
-    subscribe(
-      data => {
-        this.selectedSortie = data;
-        console.log('selectedSortie ' , this.selectedSortie);
-      });
-=======
->>>>>>> 1a2e3ad (modifier-sortie)
 
     // Récupération du paramètre id de l'URL
     this.route.paramMap.subscribe(param => {
