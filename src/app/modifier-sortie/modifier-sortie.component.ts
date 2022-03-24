@@ -33,15 +33,12 @@ export class ModifierSortieComponent implements OnInit {
 =======
 >>>>>>> 1a2e3ad (modifier-sortie)
 
-    // Initialisation du formulaire
-    this.initForm();
-
-    // Récupération du paramètre id de l'URL et affichage de la sortie correspondante
-    // dans le formulaire
+    // Récupération du paramètre id de l'URL
     this.route.paramMap.subscribe(param => {
       this.putId = param.get('id');
-      this.getAndDisplaySortie(this.putId);
+      this.initFormWithSortie(this.putId);
     })
+
     }
 
   /**
@@ -49,44 +46,27 @@ export class ModifierSortieComponent implements OnInit {
    */
   public initForm() {
     this.sortieForm = this.formBuilder.group({
-      nom : ['', [Validators.required, Validators.minLength(4) ]],
-      dateHeureDebut : ['', Validators.required],
-      duree : ['', Validators.required],
-      dateLimiteInscription : ['', Validators.required],
-      nbInscriptionsMax : ['', Validators.required],
-      infosSortie : ['', Validators.required]
+      nom : [this.selectedSortie.nom, [Validators.required, Validators.minLength(4) ]],
+      dateHeureDebut : [this.selectedSortie.dateHeureDebut, Validators.required],
+      duree : [this.selectedSortie.duree, Validators.required],
+      dateLimiteInscription : [this.selectedSortie.dateLimiteInscription, Validators.required],
+      nbInscriptionsMax : [this.selectedSortie.nbInscriptionsMax, Validators.required],
+      infosSortie : [this.selectedSortie.infosSortie, Validators.required]
     })
   }
 
   /**
   * Fonction en charge de chercher une sortie par son id
-  * et de l'afficher (appel à la fonction displaySortie)
+  * et d'initialiser un formulaire pré-rempli de ces valeurs
   */
-  public getAndDisplaySortie(id : number) : void {
+  public initFormWithSortie(id : number) : void {
     this.sd.getSortieDetail('http://localhost/api_sortie/public/api/sortie/' + id).
       subscribe(
+        //TODO: alléger la fonction
         data => {
           this.selectedSortie = data;
-          this.displaySortie(this.selectedSortie);
+          this.initForm();
         });
-  }
-
-  /**
-   * Fonction en charge d'afficher une sortie
-   */
-
-  public displaySortie(sortie : ISortie) :void {
-
-    sortie = this.selectedSortie;
-
-    this.sortieForm.patchValue({
-      nom: sortie.nom,
-      dateHeureDebut : sortie.dateHeureDebut,
-      duree : sortie.duree,
-      dateLimiteInscription : sortie.dateLimiteInscription,
-      nbInscriptionsMax : sortie.nbInscriptionsMax,
-      infosSortie : sortie.infosSortie
-    })
   }
 
   /**
