@@ -1,1 +1,85 @@
-<p>modifier-sortie works!</p>
+<div class="card">
+  <div class="card-header text-white bg-info">
+    Modifier une sortie
+  </div>
+  <div class="card-body">
+
+
+    <!-- novalidate fait on sorte que la validation utilisée soit vraiment celle d'angular -->
+    <!-- -->
+    <form novalidate [formGroup]="sortieForm" *ngIf="selectedSortie">
+      <!-- ligne 1 nom + campus-->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Nom de la sortie</label>
+          <input type="text" class="form-control"
+          formControlName="nom"
+          [value] = selectedSortie.nom />
+        </div>
+      </div>
+
+      <!-- ligne 2 date + ville -->
+      <div class="form-row d-flex" >
+        <div class="col-md-6 mb-3">
+          <label for="">Date et heure de la sortie</label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            formControlName="dateHeureDebut"
+            [value] = selectedSortie.dateHeureDebut />
+          </div>
+        </div>
+
+
+      <!-- ligne 3 date + lieu -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3" >
+          <label for="">Date limite d'inscription</label>
+          <input
+            type="date"
+            class="form-control"
+            formControlName="dateLimiteInscription"
+            [value] = selectedSortie.dateLimiteInscription/>
+        </div>
+      </div>
+
+      <!-- ligne 4 nombre de place + rue -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Nombre de places</label>
+          <input type="text" class="form-control"
+          formControlName="nbInscriptionsMax"
+          [value] = selectedSortie.nbInscriptionsMax/>
+        </div>
+      </div>
+
+      <!-- ligne 5 duree + codePostal -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Duree</label>
+          <input type="text" class="form-control"
+          formControlName = "duree"
+          [value] = selectedSortie.duree/>
+        </div>
+      </div>
+
+      <!-- ligne 6 description/infos + latitude et longitude  -->
+      <div class="form-row d-flex">
+        <div class="col-md-6 mb-3">
+          <label for="">Description et infos</label>
+          <input type="textarea" class="form-control"
+          formControlName = "infosSortie"
+          [value] = selectedSortie.infosSortie/>
+        </div>
+      </div>
+
+      <!-- ligne 7 bouton enregistrer publier annuler -->
+      <div class="form-row d-flex">
+        <button class="btn btn-info" (click)="onUpdate()" > Enregistrer</button>
+        <button class="btn btn-info" type="button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

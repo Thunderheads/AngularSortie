@@ -1,13 +1,58 @@
-<p>afficher-sortie works!ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
+<div class="card" *ngFor="let data of datas">
+  <div class="card-header text-white bg-info">
+    <span> {{ data.id }} - </span>
+    <span> {{ data.nom}}</span>
+  </div>
 
-<ul *ngFor="let data of datas">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-4"> Date et heure de début: </div>
+          <div class="col-md-8"> {{ data.dateHeureDebut | date: 'EEEE dd-MM-yyyy HH:mm' : 'UTC+1' : 'fr' }} </div>
+        </div>
 
-  <li> {{ data.id}}</li>
-  <li> {{ data.infosSortie}}</li>
-  <li> {{ data.dateHeureDebut}}</li>
-  <li> {{ data.dateLimiteInscription}}</li>
-  <li> {{ data.duree}}</li>
-  <li> {{ data.nbInscriptionsMax}}</li>
-  <li> {{ data.nom}}</li>
-</ul>
+        <div class="row">
+          <div class="col-md-4"> Date limite d'inscription: </div>
+          <div class="col-md-8"> {{ data.dateLimiteInscription | date : 'EEEE dd-MM-yyyy' : 'UTC+1' : 'fr'}} </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"> Durée de la sortie: </div>
+          <div class="col-md-8"> {{ data.duree}} </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"> Nombre de place: </div>
+          <div class="col-md-8"> {{ data.nbInscriptionsMax}} </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"> Infos: </div>
+          <div class="col-md-8"> {{ data.infosSortie }} </div>
+        </div>
+
+
+        <button class="btn btn-secondary"
+                [routerLink]="['/sortie/detail', data.id]"
+                (click)="onSelectSortie(data)">
+
+                Afficher le détail
+
+        </button>
+
+        <button class="btn btn-secondary"
+                [routerLink]="['/sortie/modifier', data.id]"
+                (click)="onSelectSortie(data)">
+
+                Modifier la sortie
+
+         </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<app-detail-sortie [selectedSortie] = "selectedSortie"></app-detail-sortie>
 

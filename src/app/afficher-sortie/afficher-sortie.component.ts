@@ -12,6 +12,7 @@ export class AfficherSortieComponent implements OnInit {
 
 
   public datas : ISortie[] = [];
+  public selectedSortie ?: ISortie;
 
   constructor(private sd: SortieData) {
 
@@ -34,6 +35,10 @@ export class AfficherSortieComponent implements OnInit {
       });
 
 
+  }
+
+  onSelectSortie(data : ISortie){
+    this.selectedSortie = data;
   }
 
 }
