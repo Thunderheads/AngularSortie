@@ -12,30 +12,13 @@ import {ILieu} from "../../modele/interface/ILieu";
 import {LieuData} from "../../api/lieu.data";
 import {CampusData} from "../../api/campus.data";
 import {ICampus} from "../../modele/interface/ICampus";
+import {ErreurMessage} from "../../erreur/erreurMessage";
 
 
 
-/**
- * Fonction en charge de transformer une date en timestamp (les millisecondes sont comprises
- * car Date.now les prend en compte aussi
- * @param strDate
- */
-function toTimestamp(strDate : any){
-  let datum = Date.parse(strDate);
-  return datum;
-}
 
-function compareDate() : ValidatorFn{
 
-  // key de type string
-  return (c : AbstractControl) : {[key:string] : boolean} | null => {
 
-    if((toTimestamp(c.value) < Date.now())){
-      return{ "dateError" : true}
-    }
-    return null;
-  };
-}
 
 @Component({
   selector: 'app-creer-sortie',
@@ -46,6 +29,11 @@ function compareDate() : ValidatorFn{
 export class CreerSortieComponent implements OnInit {
 
   //methode reactive
+  // attribut pour sauvegarder les messages d'erreurs
+  //public errorMsg : string;
+  public errorMsg = {
+    'name' : "",
+  }
   public registerForm : FormGroup;
   public postId : any;
   public lstLieux : ILieu[] = [];
@@ -56,7 +44,8 @@ export class CreerSortieComponent implements OnInit {
   constructor(private formBuilder : FormBuilder,
               private sd: SortieData,
               private lieuData :LieuData,
-              private campusData : CampusData) {
+              private campusData : CampusData,
+              private errorMessages :ErreurMessage) {
       // creation des differentes instances des objets
       this.sortie.lieu = new Lieu();
       this.sortie.lieu.ville = new Ville();
@@ -64,15 +53,7 @@ export class CreerSortieComponent implements OnInit {
       this.sortie.campus = new Campus();
   }
 
-  // attribut pour sauvegarder les messages d'erreurs
-  public errorMsg : string;
 
-
-  private validationErrorsMessages = {
-    // clé => valeur (message d'erreur)
-    'required' :'Entrez un nom à votre sortie',
-    'minlength' : 'Le nom doit faire au moins 8 caractères'
-  };
 
 
 
@@ -86,8 +67,8 @@ export class CreerSortieComponent implements OnInit {
       //premiere valuer = valeur par défaut, pour mettre plusieurs validators, utiliser un array
       nom : ['mon nom de groupe', [Validators.required, Validators.minLength(4) ]],
       //dateGroup : this.formBuilder.group({
-      dateHeureDebut :  ['02-08-1997',compareDate()],
-      dateLimiteInscription : ['1970-01-01',compareDate()],
+      dateHeureDebut :  ['02-08-1997',this.errorMessages.compareDate()],
+      dateLimiteInscription : ['1970-01-01',this.errorMessages.compareDate()],
       //}),
       nbInscriptionsMax : '9',
       duree : '45',
@@ -198,13 +179,6 @@ export class CreerSortieComponent implements OnInit {
       }
     )
   }
-  //tester la date
-  public dateValue(){
-    //recupere la date stocker
-    let date = this.registerForm.get('dateLimite')?.value;
-    let myMoment = new Date(Date.now());
-    //console.log(myMoment.getMilliseconds())
-  }
 
 
   /**
@@ -213,7 +187,8 @@ export class CreerSortieComponent implements OnInit {
    * @private
    */
   private setMessage(val : AbstractControl) : void {
-      this.errorMsg ="";
+      //this.errorMsg ="";
+      console.log(this.errorMsg.name="")
       if((val.touched || val.dirty) && val.errors){
         // permet de recuperer les clés des erreurs génerées
         //console.log(this.validationErrorsMessages['required'])
@@ -221,7 +196,8 @@ export class CreerSortieComponent implements OnInit {
         // dans object.key a la position 0 on a le type d'erreur renvoyée (à chaque fois on renvoie une seul erreur donc ça changera pas elle sera toujours a la position 0)
         // le as any est nécessaire sinon on peut pas accéder à l'erreur correspondante dans le tableau crée plus haut
         // ainsi recuperer la clé nous donne accés à la valeur indexée dans le tableau qu'on stocke dans errorMsg
-        this.errorMsg = (this.validationErrorsMessages as any)[Object.keys(val.errors)[0]];
+        this.errorMsg.name = (this.errorMessages.validationNameMsg as any)[Object.keys(val.errors)[0]];
+        console.log(this.errorMsg.name)
       }
   }
 

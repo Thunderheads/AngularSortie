@@ -9,16 +9,17 @@
     <form novalidate [formGroup]="registerForm" >
       <!-- ligne 1 nom + campus-->
       <div class="form-row d-flex">
+
         <div class="col-md-6 mb-3">
           <label for="">Nom de la sortie</label>
           <input type="text" class="form-control" placeholder="nom"
                   formControlName="nom"
-                  [ngClass] ="{ 'is-invalid' : errorMsg }">
+                  [ngClass] ="{ 'is-invalid' : errorMsg.name }">
           <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
           <!-- ngModel permet l'accès au statut de l'input -->
           <!-- bien penser au required sinon ça marche pas -->
           <div class="invalid-feedback">
-            {{ errorMsg}}
+            {{ errorMsg.name}}
           </div>
         </div>
           <div class="col-md-6 mb-3">
