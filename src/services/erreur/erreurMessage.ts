@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {AbstractControl, FormGroup, ValidatorFn} from "@angular/forms";
-import { debounceTime } from "rxjs";
+import {AbstractControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,7 @@ import { debounceTime } from "rxjs";
  */
 export class ErreurMessage{
 
-  // Associer un message à chaque champs de formulaire
-  // public errorMsg : string;
-  private errorMsg = {
-    'name' : "",
-  }
-
-
+  // ATTRIBUTS
   private _validationNameMsg  = {
     // clé => valeur (message d'erreur)
     'required' :'Entrez un nom à votre sortie',
@@ -25,36 +19,49 @@ export class ErreurMessage{
   };
 
 
-  /**
-   * Fonction en charge de renvoyer la liste des messages d'erreurs pré-définits pour le nom.
-   */
+  private _validationDateMsg = {
+    'dateError' : 'veuillez indiquer une date supérieur à la date du jour'
+  }
+
+  private _validationNbInscriptionsMax ={
+    'min' : 'le nombre minimum d\' inscription est de 1',
+    'max' : 'le nombre de participants ne peut excéder 1000',
+    'required' : 'Veuillez indiquer un nombre de participant'
+  }
+  private _validationCodePostal = {
+    'required' : 'Veuillez indiquer un code postal',
+    'pattern' : 'code postal incorrect'
+  }
+
+  // GETTER
   get validationNameMsg(): { minlength: string; required: string } {
     return this._validationNameMsg;
   }
 
-
-  /**
-   * Fonction permetant de controler le nom dans le formulaire et d'afficher un message
-   * @param name
-   */
-  public formControlName(name : AbstractControl) : string {
-    name.valueChanges.pipe(
-      //permet de définir un temps avant de lancer la suite
-      debounceTime(1000)
-    ).subscribe( val  => {
-      return this.setMessage(name, 'name');
-    });
-    return "";
+  get validationDateMsg(): { dateError: string } {
+    return this._validationDateMsg;
   }
+
+  get validationNbInscriptionsMax(): { min: string; max: string; required: string } {
+    return this._validationNbInscriptionsMax;
+  }
+
+  get validationCodePostal(): { pattern: string; required: string } {
+    return this._validationCodePostal;
+  }
+
+
+
+  //FONCTIONS
 
   /**
    * Fonction en charge d'attribuer un message d'erreur
-   * @param val // champ à contrôler
-   * @param errorKey // clé du truc qui ressemble à un tableau s'appellant errorMsg
-   * @private
+   *
+   * @param val
+   * @param value
    */
-     private setMessage(val : AbstractControl, errorKey : string) : string {
-      //(this.errorMsg as any)[errorKey] ="";
+  public setMessage(val : AbstractControl, value : {} ) : string {
+
       if((val.touched || val.dirty) && val.errors){
         // permet de recuperer les clés des erreurs génerées
         //console.log(this.validationErrorsMessages['required'])
@@ -62,7 +69,7 @@ export class ErreurMessage{
         // dans object.key a la position 0 on a le type d'erreur renvoyée (à chaque fois on renvoie une seul erreur donc ça changera pas elle sera toujours a la position 0)
         // le as any est nécessaire sinon on peut pas accéder à l'erreur correspondante dans le tableau crée plus haut
         // ainsi recuperer la clé nous donne accés à la valeur indexée dans le tableau qu'on stocke dans errorMsg
-        return (this.validationNameMsg as any)[Object.keys(val.errors)[0]];
+        return (value as any)[Object.keys(val.errors)[0]];
       }
       return "";
   }
@@ -80,7 +87,8 @@ export class ErreurMessage{
     return (c : AbstractControl) : {[key:string] : boolean} | null => {
 
       // Date.now renvoit un Timestamp, d'ou l'utilisation du toTimestamp sur la value
-      if((this.toTimestamp(c.value) < Date.now())){
+      // ajout de la condition c.value === "" car sans ça si la date est initialisée à "" ça ne genère pas d'erreur et le formulaire s'envoie bien ( ce qui devrait pas etre possible)
+      if((this.toTimestamp(c.value) < Date.now() || c.value === "" )){
         return{ "dateError" : true}
       }
       return null;

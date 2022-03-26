@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {Sortie} from "../../modele/Sortie";
 import { FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {Lieu} from "../../modele/Lieu";
@@ -11,6 +11,7 @@ import {LieuData} from "../../services/api/lieu.data";
 import {CampusData} from "../../services/api/campus.data";
 import {ICampus} from "../../modele/interface/ICampus";
 import {ErreurMessage} from "../../services/erreur/erreurMessage";
+import {debounceTime} from "rxjs";
 
 
 
@@ -33,7 +34,21 @@ export class CreerSortieComponent implements OnInit {
   public postId : any;
   public lstLieux : ILieu[] = [];
   public lstCampus : ICampus[] = [];
-  public errorMsg : string;
+  public errorMsg = {
+    nom : "",
+    dateDebut : "",
+    dateLimiteInscription : "",
+    nbInscriptionsMax : "",
+
+    duree : "",
+    codePostal :  "",
+    infosSortie : "",
+    rue : "",
+    latitude: "",
+    ville : "",
+    campus : "",
+    lieu : "",
+  }
 
 
   public sortie : Sortie = new Sortie();
@@ -63,31 +78,94 @@ export class CreerSortieComponent implements OnInit {
       //premiere valuer = valeur par défaut, pour mettre plusieurs validators, utiliser un array
       nom : ['mon nom de groupe', [Validators.required, Validators.minLength(4) ]],
       //dateGroup : this.formBuilder.group({
-      dateHeureDebut :  ['02-08-1997',this.errorMessages.compareDate()],
-      dateLimiteInscription : ['1970-01-01',this.errorMessages.compareDate()],
+      //format accepté par datedebut 1997-08-02T16:00
+      dateHeureDebut :  ['',this.errorMessages.compareDate()],
+      dateLimiteInscription : ['2050-01-01',this.errorMessages.compareDate()],
       //}),
-      nbInscriptionsMax : '9',
-      duree : '45',
-      codePostal : '',
-      infosSortie : 'coucou pas d\'infos,',
+      nbInscriptionsMax : ['9',[Validators.min(1), Validators.max(1000),  Validators.required]],
+      duree : ['45',[Validators.required]],
+      //utilisation d'une regex pour le code postal.
+      codePostal : ['',[Validators.required , Validators.pattern('(?:0[1-9]|[1-8]\\d|9[0-8])\\d{3}')]],
+      infosSortie : ['coucou pas d\'infos,',[Validators.required]],
 
-      rue : '',
+      rue : ['',[Validators.required]],
       latitude: '',
       //longitude: '',
-      ville : '',
-      campus : '',
-      lieu : '',
+      ville : ['',[Validators.required]],
+      campus : ['0',[]],
+      // on passe la value de l'option a selectionner
+      lieu : ['0',[]],
+
+
     })
     //this.defaultValueForm();
     //abonnement a l'observateur
     // ! - Non-null assertion operator
 
     // Controles du formulaire
-    this.errorMsg = this.errorMessages.formControlName(this.registerForm.get('nom')!);
+
 
     this.getLieux();
     this.getCampus();
+
+    //input name
+    this.registerForm.get('nom')!.valueChanges.pipe(
+      //permet de définir un temps avant de lancer la suite
+      debounceTime(1000)
+    ).subscribe( val  => {
+      this.errorMsg.nom = this.errorMessages.setMessage(
+        this.registerForm.get('nom')!,
+        this.errorMessages.validationNameMsg
+      );});
+
+    //input date debut
+    this.registerForm.get('dateHeureDebut')!.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe( val  => {
+      this.errorMsg.dateDebut = this.errorMessages.setMessage(
+        this.registerForm.get('dateHeureDebut')!,
+        this.errorMessages.validationDateMsg
+      );});
+
+
+    //input date limite d'inscription
+    this.registerForm.get('dateLimiteInscription')!.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe( val  => {
+      this.errorMsg.dateLimiteInscription = this.errorMessages.setMessage(
+        this.registerForm.get('dateLimiteInscription')!,
+        this.errorMessages.validationDateMsg
+      );});
+
+    //input nombre maximum d'inscription
+    this.registerForm.get('nbInscriptionsMax')!.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe( val  => {
+      this.errorMsg.nbInscriptionsMax = this.errorMessages.setMessage(
+        this.registerForm.get('nbInscriptionsMax')!,
+        this.errorMessages.validationNbInscriptionsMax
+      );});
+
+
+    // input codePostal
+    this.registerForm.get('codePostal')!.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe( val  => {
+      console.log(this.registerForm.get('codePostal')!.errors)
+      this.errorMsg.codePostal = this.errorMessages.setMessage(
+        this.registerForm.get('codePostal')!,
+        this.errorMessages.validationCodePostal
+      );});
+
+    // input duree
+    // input infosSortie
+    // input rue
+    // input latitude
+    // input ville
+    // input campus
+    // input lieu
   }
+
 
   // generer des valeurs par défaut
   public defaultValueForm(){
@@ -109,15 +187,20 @@ export class CreerSortieComponent implements OnInit {
   }
 
   /**
-   * Fonction en charge d'ajouter une sortie en base de données
+   * Fonction en charge d'ajouter une sortie en base de données seulement si le formualire est valide
+   * (appelée au niveau de la balise form par la directive ngSubmit )
    */
   public onSave(){
-    console.log(this.registerForm.value);
-    const url = "http://localhost/APISortie/public/api/sortie/";
-    this.sd.createSortie(url, this.registerForm.value).subscribe(data =>
-      this.postId = data.id)
-    console.log(this.postId)
-    ;
+    if(this.registerForm.status === 'VALID' && this.registerForm.touched ){
+      const url = "http://localhost/APISortie/public/api/sortie/";
+      this.sd.createSortie(url, this.registerForm.value).subscribe(data =>{
+        this.postId = data.id,
+        console.log(this.postId)
+      });
+    } else {
+      console.log("form non valide")
+    }
+
   }
 
   /**
@@ -125,20 +208,26 @@ export class CreerSortieComponent implements OnInit {
    *
    */
   public setValues(){
-    //permet de recuperer ma valeur du lieu
-    console.log(this.registerForm.get('lieu')?.value)
-    let url = "http://localhost/APISortie/public/api/lieu/";
-    this.lieuData.getLieu(url+=this.registerForm.get('lieu')?.value).subscribe(
-      data =>{
-        console.log(data)
-        this.registerForm.patchValue({ville : data.ville.nom})
-        this.registerForm.patchValue({rue : data.rue})
-        this.registerForm.patchValue({codePostal : data.ville.codePostal})
-        this.registerForm.patchValue({latitude : data.latitude})
-      }
+    // on veut pas lancer l'appel asynchore quand on est sur "choix lieu"
+    if(this.registerForm.get('lieu')?.value > 0){
+      let url = "http://localhost/APISortie/public/api/lieu/";
+      this.lieuData.getLieu(url+=this.registerForm.get('lieu')?.value).subscribe(
+        data =>{
+          console.log(data)
+          this.registerForm.patchValue({ville : data.ville.nom})
+          this.registerForm.patchValue({rue : data.rue})
+          this.registerForm.patchValue({codePostal : data.ville.codePostal})
+          this.registerForm.patchValue({latitude : data.latitude})
+        }
 
-    )
-    console.log('coucou');
+      )
+    } else {
+      this.registerForm.patchValue({ville : ""})
+      this.registerForm.patchValue({rue : ""})
+      this.registerForm.patchValue({codePostal : ""})
+      this.registerForm.patchValue({latitude : ""})
+    }
+
 
   }
 
@@ -171,5 +260,7 @@ export class CreerSortieComponent implements OnInit {
       }
     )
   }
+
+
 
 }

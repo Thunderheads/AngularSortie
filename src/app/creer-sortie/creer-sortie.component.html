@@ -6,7 +6,8 @@
 
     <!-- novalidate fait on sorte que la validation utilisée soit vraiment celle d'angular -->
     <!-- -->
-    <form novalidate [formGroup]="registerForm" >
+    <!-- ngSumbit lance la fonction quand le form est soumis-->
+    <form novalidate [formGroup]="registerForm" (ngSubmit)="onSave()">
       <!-- ligne 1 nom + campus-->
       <div class="form-row d-flex">
 
@@ -14,15 +15,16 @@
           <label for="">Nom de la sortie</label>
           <input type="text" class="form-control" placeholder="nom"
                   formControlName="nom"
-                  [ngClass] ="{ 'is-invalid' : errorMsg }">
+                  [ngClass] ="{ 'is-invalid' : errorMsg.nom }"
+          >
           <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
           <!-- ngModel permet l'accès au statut de l'input -->
           <!-- bien penser au required sinon ça marche pas -->
           <div class="invalid-feedback">
-            {{ errorMsg }}
+            {{ errorMsg.nom }}
           </div>
         </div>
-          <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3">
             <label for="">Campus</label>
             <select formControlName="campus"  friendly-name="Model" class="form-control" ng-required="true" >
               <option value="0" >Choisir un campus</option>
@@ -41,33 +43,24 @@
           <input
             type="datetime-local"
             class="form-control"
-            placeholder="nom"
             formControlName="dateHeureDebut"
-            [ngClass] ="{ 'is-invalid' : (registerForm.get('dateHeureDebut')?.touched
-            ||  registerForm.get('dateHeureDebut')?.dirty) &&
-            !registerForm.get('dateHeureDebut')?.valid }"
+            [ngClass] ="{ 'is-invalid' : errorMsg.dateDebut}"
           >
           <div class="invalid-feedback">
-            <span *ngIf="registerForm.get('dateHeureDebut')?.errors?.['dateError']">
-              veuillez indiquer une date supérieur à la date du jour
-            </span>
-
-
+              {{ errorMsg.dateDebut}}
             <!-- pour afficher un petit message a la suite de l'input on doit acceder a la propiété .errors
             -->
           </div>
         </div>
-
         <div class="col-md-6 mb-3">
           <label for="">Ville</label>
           <input type="text" class="form-control" placeholder="ville"
                  formControlName="ville"
-                 [ngClass] ="{ 'is-invalid' : errorMsg }">
+                 >
           <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
           <!-- ngModel permet l'accès au statut de l'input -->
           <!-- bien penser au required sinon ça marche pas -->
           <div class="invalid-feedback">
-            {{ errorMsg}}
           </div>
 
 
@@ -83,23 +76,20 @@
             class="form-control"
             placeholder=""
             formControlName="dateLimiteInscription"
-            [ngClass] ="{ 'is-invalid' : (registerForm.get('dateLimiteInscription')?.touched ||
-            registerForm.get('dateLimiteInscription')?.dirty) && !registerForm.get('dateLimiteInscription')?.valid }"
+            [ngClass] ="{ 'is-invalid' : errorMsg.dateLimiteInscription }"
           >
           <div class="invalid-feedback">
-            <span *ngIf="registerForm.get('dateLimiteInscription')?.errors?.['dateError']">
-              veuillez indiquer une date supérieur à la date du jour
-            </span>
-
-
-            <!-- pour afficher un petit message a la suite de l'input on doit acceder a la propiété .errors
-            -->
+            {{ errorMsg.dateLimiteInscription}}
           </div>
         </div>
         <div class="col-md-6 mb-3">
           <label for="">Lieu</label>
-          <select formControlName="lieu"  friendly-name="Model" class="form-control" ng-required="true"  (change)="setValues()">
-            <option value="0" >Choisir un lieu</option>
+          <select formControlName="lieu"
+                  friendly-name="Model"
+                  class="form-control"
+                  ng-required="true"
+                  (change)="setValues()">
+            <option value="0"  >Choisir un lieu</option>
             <option *ngFor='let lieu of lstLieux' value="{{lieu.id}}" >{{lieu.nom}}</option>
           </select>
         </div>
@@ -110,21 +100,25 @@
       <div class="form-row d-flex">
         <div class="col-md-6 mb-3">
           <label for="">Nombre de places</label>
-          <input type="text" class="form-control" placeholder=""  formControlName="nbInscriptionsMax">
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="">Rue</label>
-          <input type="text" class="form-control" placeholder="rue"
-                 formControlName="rue"
-                 [ngClass] ="{ 'is-invalid' : errorMsg }">
-          <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
-          <!-- ngModel permet l'accès au statut de l'input -->
-          <!-- bien penser au required sinon ça marche pas -->
+          <input type="number"
+                 class="form-control"
+                 placeholder=""
+                 formControlName="nbInscriptionsMax"
+                 [ngClass]="{'is-invalid' : errorMsg.nbInscriptionsMax}"
+          >
           <div class="invalid-feedback">
-            {{ errorMsg}}
+            {{ errorMsg.nbInscriptionsMax}}
           </div>
 
+        </div>
 
+        <div class="col-md-6 mb-3">
+          <label for="">Rue</label>
+          <input type="text"
+                 class="form-control"
+                 placeholder="rue"
+                 formControlName="rue"
+                 >
         </div>
 
       </div>
@@ -133,22 +127,24 @@
       <div class="form-row d-flex">
         <div class="col-md-6 mb-3">
           <label for="">Duree</label>
-          <input type="text" class="form-control" placeholder=""  formControlName="duree">
+          <input type="number"
+                 class="form-control"
+                 placeholder=""
+                 formControlName="duree">
         </div>
 
 
         <div class="col-md-6 mb-3">
           <label for="">Code Postal</label>
-          <input type="text" class="form-control" placeholder="codePostal"
+          <input type="number"
+                 class="form-control"
+                 placeholder="codePostal"
                  formControlName="codePostal"
-                 [ngClass] ="{ 'is-invalid' : errorMsg }">
-          <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
-          <!-- ngModel permet l'accès au statut de l'input -->
-          <!-- bien penser au required sinon ça marche pas -->
+                 [ngClass] ="{ 'is-invalid' : errorMsg.codePostal }"
+          >
           <div class="invalid-feedback">
-            {{ errorMsg}}
+            {{ errorMsg.codePostal }}
           </div>
-
 
         </div>
 
@@ -158,29 +154,29 @@
       <div class="form-row d-flex">
         <div class="col-md-6 mb-3">
           <label for="">Description et infos</label>
-          <input type="text" class="form-control" placeholder=""  formControlName="infosSortie">
+          <textarea class="form-control"
+                    placeholder=""
+                    formControlName="infosSortie">
+
+          </textarea>
+
 
         </div>
         <div class="col-md-6 mb-3">
           <label for="">latitude</label>
-          <input type="text" class="form-control" placeholder="latitude"
+          <input type="number"
+                 class="form-control"
+                 placeholder=""
                  formControlName="latitude"
-                 [ngClass] ="{ 'is-invalid' : errorMsg }">
-          <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
-          <!-- ngModel permet l'accès au statut de l'input -->
-          <!-- bien penser au required sinon ça marche pas -->
-          <div class="invalid-feedback">
-            {{ errorMsg}}
-          </div>
-
-
+                >
         </div>
 
       </div>
 
       <!-- ligne 7 bouton enregistrer publier annuler -->
       <div class="form-row d-flex">
-        <button class="btn btn-info" (click)="onSave()" >Enregistrer</button>
+        <!-- ici tant que le formulaire n'est pas valide, on rend le bouton enregister disable c'est modifiable avec le html donc ne jamais se passer des validations suivantes-->
+        <button class="btn btn-info" [disabled]="!registerForm.valid">Enregistrer</button>
         <button class="btn btn-info" type="button">Annuler</button>
       </div>
     </form>
