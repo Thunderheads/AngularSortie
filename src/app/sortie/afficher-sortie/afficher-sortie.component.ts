@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SortieData} from "../../services/api/sortie.data";
-import {ISortie} from "../../modele/interface/ISortie";
+import { SortieData} from "../../../services/api/sortie.data";
+import {ISortie} from "../../../modele/interface/ISortie";
 
 
 @Component({

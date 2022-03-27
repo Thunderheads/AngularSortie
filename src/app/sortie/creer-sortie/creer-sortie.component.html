@@ -4,6 +4,12 @@
   </div>
   <div class="card-body">
 
+    <div *ngIf="isDone.isCorrect && isDone.isCreate" class="alert alert-success" role="alert" >
+      Sortie enregistrée !
+    </div>
+    <div *ngIf="!isDone.isCorrect && !isDone.isCreate" class="alert alert-danger" role="alert">
+      Informations incorrectes
+    </div>
     <!-- novalidate fait on sorte que la validation utilisée soit vraiment celle d'angular -->
     <!-- -->
     <!-- ngSumbit lance la fonction quand le form est soumis-->

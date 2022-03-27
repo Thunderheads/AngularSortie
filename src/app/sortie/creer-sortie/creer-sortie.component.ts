@@ -1,16 +1,16 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
-import {Sortie} from "../../modele/Sortie";
+import {Sortie} from "../../../modele/Sortie";
 import { FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {Lieu} from "../../modele/Lieu";
-import {Campus} from "../../modele/Campus";
-import {Etat} from "../../modele/Etat";
-import {Ville} from "../../modele/Ville";
-import {SortieData} from "../../services/api/sortie.data";
-import {ILieu} from "../../modele/interface/ILieu";
-import {LieuData} from "../../services/api/lieu.data";
-import {CampusData} from "../../services/api/campus.data";
-import {ICampus} from "../../modele/interface/ICampus";
-import {ErreurMessage} from "../../services/erreur/erreurMessage";
+import {Lieu} from "../../../modele/Lieu";
+import {Campus} from "../../../modele/Campus";
+import {Etat} from "../../../modele/Etat";
+import {Ville} from "../../../modele/Ville";
+import {SortieData} from "../../../services/api/sortie.data";
+import {ILieu} from "../../../modele/interface/ILieu";
+import {LieuData} from "../../../services/api/lieu.data";
+import {CampusData} from "../../../services/api/campus.data";
+import {ICampus} from "../../../modele/interface/ICampus";
+import {ErreurMessage} from "../../../services/erreur/erreurMessage";
 import {debounceTime} from "rxjs";
 
 
@@ -30,8 +30,12 @@ export class CreerSortieComponent implements OnInit {
   //methode reactive
   // attribut pour sauvegarder les messages d'erreurs
 
+  public isDone = {
+    isCorrect : true,
+    isCreate : false,
+  }
   public registerForm : FormGroup;
-  public postId : any;
+  public postId : number;
   public lstLieux : ILieu[] = [];
   public lstCampus : ICampus[] = [];
   public errorMsg = {
@@ -70,6 +74,8 @@ export class CreerSortieComponent implements OnInit {
 
   // fonction qui fait quelque chose au lancement de la page
   ngOnInit(): void {
+
+
     //methode reactive
     //on constitue un form group qui lui meme est consituté de plusieurs forms controles
 
@@ -186,22 +192,7 @@ export class CreerSortieComponent implements OnInit {
     })
   }
 
-  /**
-   * Fonction en charge d'ajouter une sortie en base de données seulement si le formualire est valide
-   * (appelée au niveau de la balise form par la directive ngSubmit )
-   */
-  public onSave(){
-    if(this.registerForm.status === 'VALID' && this.registerForm.touched ){
-      const url = "http://localhost/APISortie/public/api/sortie/";
-      this.sd.createSortie(url, this.registerForm.value).subscribe(data =>{
-        this.postId = data.id,
-        console.log(this.postId)
-      });
-    } else {
-      console.log("form non valide")
-    }
 
-  }
 
   /**
    * fonction en charge de mettre a jour les informations des champs quand un lieu est choisit
@@ -261,6 +252,32 @@ export class CreerSortieComponent implements OnInit {
     )
   }
 
+  /**
+   * Fonction en charge d'ajouter une sortie en base de données seulement si le formualire est valide
+   * (appelée au niveau de la balise form par la directive ngSubmit )
+   */
+  public onSave(){
+    if(this.registerForm.status === 'VALID' && this.registerForm.touched ){
+      const url = "http://localhost/APISortie/public/api/sortie/";
+      this.sd.createSortie(url, this.registerForm.value).subscribe(data =>{
+        this.postId = data.id
+        this.isCreated(this.postId);
 
+      });
+    } else {
+      this.isCreated(this.postId)
+    }
+
+  }
+
+  private isCreated(value : number){
+    if (value !== undefined){
+      this.isDone.isCreate = true;
+      this.isDone.isCorrect = true;
+    } else {
+      this.isDone.isCreate = false;
+      this.isDone.isCorrect = false;
+    }
+  }
 
 }
