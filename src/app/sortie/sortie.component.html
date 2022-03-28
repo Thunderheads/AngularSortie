@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0a4275;">
   <img class="img-fluid" src="assets/img/exit.png" alt="image" />
-  <a class="navbar-brand text-light font-weight-bold" href="#">Sortir</a>
+  <a class="navbar-brand text-light font-weight-bold" [routerLink]="['home']">Sortir</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -10,13 +10,16 @@
         <a class="nav-item nav-link text-light" [routerLink]="['home']">Accueil</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
+        <a class="nav-item nav-link text-light" [routerLink]="['utilisateur/modifier']">Mon compte</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
         <a class="nav-item nav-link text-light" [routerLink]="['afficher']">Voir la liste des sorties</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-item nav-link text-light" [routerLink]="['creer']">Créer une sortie</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-item nav-link text-light mr-5">Se déconnecter</a>
+        <a class="nav-item nav-link text-light mr-5" [routerLink]="['../login']">Se déconnecter</a>
       </li>
     </div>
   </div>

@@ -16,6 +16,8 @@ import { registerLocaleData } from '@angular/common';
 import localFr from '@angular/common/locales/fr';
 import { LoginComponent } from './login/login.component';
 import { SortieComponent } from './sortie/sortie.component';
+import { AfficherUserComponent } from './sortie/afficher-user/afficher-user.component';
+import { ModifierUserComponent } from './sortie/modifier-user/modifier-user.component';
 
 registerLocaleData(localFr, 'fr')
 
@@ -31,6 +33,8 @@ registerLocaleData(localFr, 'fr')
     DetailSortieComponent,
     LoginComponent,
     SortieComponent,
+    AfficherUserComponent,
+    ModifierUserComponent,
 
   ],
   imports: [
