@@ -16,29 +16,28 @@
     <form novalidate [formGroup]="registerForm" (ngSubmit)="onSave()">
       <!-- ligne 1 nom + campus-->
       <div class="form-row d-flex">
-
-        <div class="col-md-6 mb-3">
-          <label for="">Nom de la sortie</label>
-          <input type="text" class="form-control" placeholder="nom"
-                  formControlName="nom"
-                  [ngClass] ="{ 'is-invalid' : errorMsg.nom }"
-          >
-          <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
-          <!-- ngModel permet l'accès au statut de l'input -->
-          <!-- bien penser au required sinon ça marche pas -->
-          <div class="invalid-feedback">
-            {{ errorMsg.nom }}
+          <div class="col-md-6 mb-3">
+            <div>
+              <label for="">Nom de la sortie</label>
+              <input type="text" class="form-control" placeholder="nom"
+                      formControlName="nom"
+                      [ngClass] ="{ 'is-invalid' : errorMsg }">
+              <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
+              <!-- ngModel permet l'accès au statut de l'input -->
+              <!-- bien penser au required sinon ça marche pas -->
+              <div class="invalid-feedback">
+                {{ errorMsg }}
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-3">
             <label for="">Campus</label>
             <select formControlName="campus"  friendly-name="Model" class="form-control" ng-required="true" >
               <option value="0" >Choisir un campus</option>
               <option *ngFor='let campus of lstCampus' value="{{campus.id}}" >{{campus.nom}}</option>
             </select>
           </div>
-
-      </div>
+        </div>
 
 
       <!-- ligne 2 date + ville -->

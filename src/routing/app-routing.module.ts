@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from "../app/sortie/home/home.component";
 import {AppComponent} from "../app/app.component";
+
 import {CreerSortieComponent} from "../app/sortie/creer-sortie/creer-sortie.component";
 import {ModifierSortieComponent} from "../app/sortie/modifier-sortie/modifier-sortie.component";
 import {AfficherSortieComponent} from "../app/sortie/afficher-sortie/afficher-sortie.component";
@@ -13,6 +14,7 @@ import {SortieComponent} from "../app/sortie/sortie.component";
 import {LoginGuard} from "../services/guards/login-guard.service";
 import {AfficherUserComponent} from "../app/sortie/afficher-user/afficher-user.component";
 import {ModifierUserComponent} from "../app/sortie/modifier-user/modifier-user.component";
+import { SortieGuard } from 'src/services/guard/sortie-guard.guard';
 
 const routes: Routes =[
   //chemin d'accès aux différents composants

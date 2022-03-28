@@ -9,30 +9,15 @@
     <!-- -->
     <form novalidate (ngSubmit)="onUpdate()" [formGroup]="sortieForm" *ngIf="selectedSortie">
 
-      <div class="form-row d-flex">
-        <div class="col-md-6 mb-3">
+      <!-- ligne 1 nom de la sortie et date limite d'inscription -->
+      <div class="form-group row mb-3">
+        <div class="col-sm-6">
           <label for="nom">Nom de la sortie</label>
           <input type="text" class="form-control" id="nom"
           formControlName="nom" />
         </div>
-      </div>
 
-
-      <div class="form-row d-flex" >
-        <div class="col-md-6 mb-3">
-          <label for="dateSortie">Date et heure de la sortie</label>
-          <input
-            type="datetime-local"
-            class="form-control"
-            id="dateSortie"
-            formControlName="dateHeureDebut" />
-          </div>
-        </div>
-
-
-
-      <div class="form-row d-flex">
-        <div class="col-md-6 mb-3" >
+        <div class="col-sm-6" >
           <label for="dateInscription">Date limite d'inscription</label>
           <input
             type="date"
@@ -40,50 +25,65 @@
             id="dateInscription"
             formControlName="dateLimiteInscription"/>
         </div>
-      </div>
+      </div> <!-- ligne 1-->
 
 
-      <div class="form-row d-flex">
-        <div class="col-md-6 mb-3">
+      <!-- ligne 2 date et heure de la sortie ainsi que sa durée -->
+      <div class="form-group row mb-3">
+        <div class="col-sm-6">
+          <label for="dateSortie">Date et heure de la sortie</label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            id="dateSortie"
+            formControlName="dateHeureDebut" />
+          </div>
+
+          <div class="col-sm-6">
+            <label for="duree">Duree</label>
+            <input type="text" class="form-control" id="duree"
+            formControlName = "duree"/>
+          </div>
+        </div> <!-- ligne 2-->
+
+
+      <!-- ligne 3 nombre de place + duree -->
+      <div class="form-group row mb-3">
+        <div class="col-sm-6">
           <label for="nbPlace">Nombre de places</label>
           <input type="text" class="form-control" id="nbPlace"
           formControlName="nbInscriptionsMax"/>
         </div>
-      </div>
 
 
-      <div class="form-row d-flex">
-        <div class="col-md-6 mb-3">
-          <label for="duree">Duree</label>
-          <input type="text" class="form-control" id="duree"
-          formControlName = "duree"/>
-        </div>
-      </div>
+      </div> <!-- ligne 3-->
 
 
-      <div class="form-row d-flex">
-        <div class="col-md-6 mb-3">
+
+      <!-- ligne 4 de description de la sortie-->
+      <div class="form-group row mb-3">
+        <div class="col-sm-12">
           <label for="description">Description et infos</label>
-          <textarea class="form-control" id="description"
+          <textarea class="form-control" id="description" rows="5"
           formControlName = "infosSortie">
           </textarea>
         </div>
-      </div>
+      </div> <!-- ligne 4-->
 
-      <!-- ligne 7 bouton enregistrer pour modifier et bouton annuler -->
+      <!-- ligne d'actions button -->
       <div class="form-row d-flex">
         <button class="btn btn-info" type="submit" >
           Enregistrer
         </button>
 
-        <button class="btn btn-outline-secondary" type="button" [routerLink]="['/sortie/afficher']">
+        <button class="btn btn-outline-secondary ms-3" type="button" [routerLink]="['/sortie/afficher']">
           Annuler
         </button>
 
-        <button class="btn btn-outline-danger" type="button" >
+        <button (click)="onDelete()" class="btn btn-outline-danger ms-3" type="button" >
           Supprimer
         </button>
-      </div>
+      </div> <!-- ligne action button-->
     </form>
   </div>
 </div>

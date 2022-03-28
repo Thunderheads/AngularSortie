@@ -1,8 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { SortieData } from 'src/services/api/sortie.data';
 import { ISortie } from 'src/modele/ISortie';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-modifier-sortie',
@@ -18,7 +20,8 @@ export class ModifierSortieComponent implements OnInit {
   constructor(
     private route : ActivatedRoute,
     private formBuilder : FormBuilder,
-    private sd : SortieData
+    private sd : SortieData,
+    private router : Router
     ) { }
 
   ngOnInit(): void {
@@ -32,7 +35,21 @@ export class ModifierSortieComponent implements OnInit {
     }
 
   /**
-   * Fonction en charge d'initialiser le formulaire de modification
+  * Fonction en charge de chercher une sortie par son id
+  * et d'initialiser un formulaire pré-rempli de ces valeurs
+  */
+  public initFormWithSortie(id : number) : void {
+    this.sd.getSortieDetail('http://localhost/APIsortie/public/api/sortie/' + id).
+      subscribe(
+        //TODO: alléger la fonction
+        data => {
+          this.selectedSortie = data;
+          this.initForm();
+        });
+  }
+
+  /**
+   * Fonction en charge d'initialiser le formulaire de modification avec la sortie sélectionnée
    */
   public initForm() : void {
     this.sortieForm = this.formBuilder.group({
@@ -45,19 +62,7 @@ export class ModifierSortieComponent implements OnInit {
     })
   }
 
-  /**
-  * Fonction en charge de chercher une sortie par son id
-  * et d'initialiser un formulaire pré-rempli de ces valeurs
-  */
-  public initFormWithSortie(id : number) : void {
-    this.sd.getSortieDetail('http://localhost/api_sortie/public/api/sortie/' + id).
-      subscribe(
-        //TODO: alléger la fonction
-        data => {
-          this.selectedSortie = data;
-          this.initForm();
-        });
-  }
+
 
   /**
    * Fonction en charge de modifier une sortie en base de données
@@ -65,8 +70,24 @@ export class ModifierSortieComponent implements OnInit {
      public onUpdate() : void {
       console.log('sortieForm values ' , this.sortieForm.value);
       const url = "http://localhost/APIsortie/public/api/sortie/" + this.selectedSortie?.id
-      this.sd.updateSortie(url, this.sortieForm.value).subscribe(data =>
-        this.putId = data.id)
+      this.sd.updateSortie(url, this.sortieForm.value).subscribe({
+        next : data => {
+          console.log("je suis dans le next"),
+          this.putId = data.id,
+          this.router.navigate(['sortie/afficher'])
+        }
+      })
+  }
+
+  /**
+   * Fonction en charge de supprimer une sortie en base de données
+   */
+     public onDelete() : void {
+      const url = "http://localhost/APIsortie/public/api/sortie/?id=" + this.selectedSortie?.id
+      this.sd.deleteSortie(url).subscribe({
+        next : () => this.router.navigate(['/sortie/afficher'])
+        }
+      );
   }
 
 }

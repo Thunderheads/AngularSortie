@@ -21,7 +21,7 @@ export class DetailSortieComponent implements OnInit {
 
     const id  = this.route.snapshot.paramMap.get('id');
 
-    this.sd.getSortieDetail('http://localhost/APIsortie/public/api/sortie/' + id).
+    this.sd.getSortieDetail('http://localhost/APIsortie/public/api/sortie/?id=' + id).
     subscribe(
       data => {
         console.log('data ', data);

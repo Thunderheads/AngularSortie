@@ -29,7 +29,7 @@ export class SortieData {
   }
 
   /**
-   * fonction en charge de requeter l'api symfony pour en extraire une sorties
+   * fonction en charge de requeter l'api symfony pour en extraire une sortie
    * @param url
    */
      public getSortieDetail(url: string): Observable<ISortie> {
@@ -54,4 +54,13 @@ export class SortieData {
 
       return this.http.put<ISortie>(url, sortie)
     }
+
+    /**
+   * Fonction en charge de supprimer une sortie en base de données
+   * @param url
+   */
+       public deleteSortie(url: string): Observable<ISortie> {
+
+        return this.http.delete<ISortie>(url)
+      }
 }

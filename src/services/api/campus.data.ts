@@ -24,6 +24,6 @@ export class CampusData{
    */
   public getCampus(url: string): Observable<ICampus> {
 
-    return this.http.get<ICampus>(url, httpOptions)
+    return this.http.get<ICampus>(url)
   }
 }
