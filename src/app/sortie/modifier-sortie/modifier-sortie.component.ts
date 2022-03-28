@@ -16,6 +16,8 @@ export class ModifierSortieComponent implements OnInit {
   public selectedSortie : ISortie;
   public sortieForm : FormGroup;
   public putId : any;
+  public errorMessage: string;
+  public isFormSubmitted : boolean;
 
   constructor(
     private route : ActivatedRoute,
@@ -62,32 +64,73 @@ export class ModifierSortieComponent implements OnInit {
     })
   }
 
-
-
   /**
    * Fonction en charge de modifier une sortie en base de données
    */
      public onUpdate() : void {
-      console.log('sortieForm values ' , this.sortieForm.value);
-      const url = "http://localhost/APIsortie/public/api/sortie/" + this.selectedSortie?.id
-      this.sd.updateSortie(url, this.sortieForm.value).subscribe({
-        next : data => {
-          console.log("je suis dans le next"),
-          this.putId = data.id,
-          this.router.navigate(['sortie/afficher'])
+
+      this.isFormSubmitted = true;
+    this.sortieForm.updateValueAndValidity({
+      onlySelf: true,
+      emitEvent: true
+    });
+
+    if (this.sortieForm.valid) {
+      if (this.sortieForm.dirty) {
+        const sortie: ISortie = {
+          ...this.selectedSortie,
+          ...this.sortieForm.value
         }
-      })
+
+        console.log('sortieForm values ' , this.sortieForm.value);
+        const url = "http://localhost/APIsortie/public/api/sortie/?id=" + sortie.id
+        this.sd.updateSortie(url, sortie).subscribe({
+          next : data => {
+            console.log("je suis dans le next"),
+            this.putId = data.id,
+            this.saveCompleted();
+          },
+          error : (err) => this.errorMessage = err
+        })
+
+      } else {
+        this.saveCompleted();
+      }
+    } else {
+      this.errorMessage = "Le formulaire comporte des erreurs";
+    }
+
   }
 
   /**
    * Fonction en charge de supprimer une sortie en base de données
    */
      public onDelete() : void {
-      const url = "http://localhost/APIsortie/public/api/sortie/?id=" + this.selectedSortie?.id
-      this.sd.deleteSortie(url).subscribe({
-        next : () => this.router.navigate(['/sortie/afficher'])
-        }
-      );
+      const url = "http://localhost/APIsortie/public/api/sortie/" + this.selectedSortie?.id;
+      if (confirm(`Voulez-vous supprimer la sortie ${this.selectedSortie.nom} ?`)){
+        this.sd.deleteSortie(url).subscribe({
+          next : () => this.saveCompleted(),
+          error : (err) => this.errorMessage = err
+          }
+        );
+      }
+  }
+
+  /**
+   * Fonction en charge de vider les champs du formulaire et rediriger l'utilisateur
+   * vers la liste des sorites
+   */
+  public saveCompleted(): void {
+    this.sortieForm.reset();
+    this.router.navigate(['/afficher/sortie']);
+  }
+
+
+  /**
+   * Fonction en charge de cacher le champs des messages d'erreur lorsqu'il n'y a pas d'erreurs
+   */
+  public hideErrorMessage() : void {
+    this.errorMessage = "";
   }
 
 }

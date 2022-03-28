@@ -1,3 +1,11 @@
+<div class="alert alert-danger mt-2 mb-2 d-flex align-items-center" *ngIf="errorMessage">
+  <span class="material-icons mr-2">error</span>
+  {{ errorMessage }}
+  <span class="material-icons ml-auto" (click)="hideErrorMessage()">
+    close
+  </span>
+</div>
+
 <div class="card">
   <div class="card-header text-white bg-info">
     Modifier une sortie
