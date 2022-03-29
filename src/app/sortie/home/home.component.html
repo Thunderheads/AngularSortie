@@ -1,2 +1,123 @@
-<h2> Filtrer les sorties </h2>
-<app-afficher-sortie></app-afficher-sortie>
+<div class="row">
+  <h2 class="col-md-11"><b>Filtrer les sorties </b></h2>
+  <p class="col-md-1 text-success"> Bonjour <b>{{ pseudo }}</b> !</p>
+</div>
+<form novalidate>
+  <div class="row">
+    <div class="col-5">
+
+      <div class="row mt-3">
+        <div class="col-6">
+          <label for="">Campus</label>
+        </div>
+
+        <div class="col-6">
+          <select class="form-select" name="" id=""></select>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-6">
+          <label for="">Le nom de la sortie contient</label>
+        </div>
+        <div class="col-6">
+
+
+          <div class="input-group w-50">
+              <span class="input-group-text" id="basic-addon1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                     viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                </path>
+                </svg>
+              </span>
+            <input type="text" class="form-control" placeholder=""
+                   aria-describedby="basic-addon1">
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+
+        <div class="col-6">
+          <div class="row">
+            <div class="col-2">
+              <label for="">Entre</label>
+            </div>
+            <div class="col">
+              <input class="form-control" type="date" name="" id="">
+            </div>
+            <div class="col-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-calendar"
+                   viewBox="0 0 16 16">
+                <path
+                  d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="row">
+            <div class="col-1">
+              <label for="">Et </label>
+            </div>
+            <div class="col">
+              <input class="form-control" type="date" name="" id="">
+            </div>
+            <div class="col-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-calendar"
+                   viewBox="0 0 16 16">
+                <path
+                  d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="col-3">
+      <div class="row">
+        <div class="col-1 ">
+          <input class="form-check-input" type="checkbox" name="" id="">
+        </div>
+        <div class="col-11 p-0">
+          <label for="">Sorties dont je suis l'organisateur/trice</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 ">
+          <input class="form-check-input" type="checkbox" name="" id="">
+        </div>
+        <div class="col-11 p-0">
+          <label for="">Sorties auxquelles je suis inscrit/e</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 ">
+          <input class="form-check-input" type="checkbox" name="" id="">
+        </div>
+        <div class="col-11 p-0">
+          <label for="">Sorties auxquelles je ne suis pas inscrit/e</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 ">
+          <input class="form-check-input" type="checkbox" name="" id="">
+        </div>
+        <div class="col-11 p-0">
+          <label for="">Sorties passées</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-primary btn-lg">Rechercher</button>
+    </div>
+  </div>
+</form>
+
+<router-outlet></router-outlet>
+

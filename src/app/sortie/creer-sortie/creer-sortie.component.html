@@ -21,18 +21,18 @@
               <label for="">Nom de la sortie</label>
               <input type="text" class="form-control" placeholder="nom"
                       formControlName="nom"
-                      [ngClass] ="{ 'is-invalid' : errorMsg }">
+                      [ngClass] ="{ 'is-invalid' : errorMsg.nom }">
               <!-- ngClass permet l'ajout d'une classe à l'input de façon conditionnelle -->
               <!-- ngModel permet l'accès au statut de l'input -->
               <!-- bien penser au required sinon ça marche pas -->
               <div class="invalid-feedback">
-                {{ errorMsg }}
+                {{ errorMsg.nom }}
               </div>
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label for="">Campus</label>
-            <select formControlName="campus"  friendly-name="Model" class="form-control" ng-required="true" >
+            <select formControlName="campus"  friendly-name="Model" class="form-select" ng-required="true" >
               <option value="0" >Choisir un campus</option>
               <option *ngFor='let campus of lstCampus' value="{{campus.id}}" >{{campus.nom}}</option>
             </select>
@@ -91,7 +91,7 @@
           <label for="">Lieu</label>
           <select formControlName="lieu"
                   friendly-name="Model"
-                  class="form-control"
+                  class="form-select"
                   ng-required="true"
                   (change)="setValues()">
             <option value="0"  >Choisir un lieu</option>
@@ -119,11 +119,7 @@
 
         <div class="col-md-6 mb-3">
           <label for="">Rue</label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="rue"
-                 formControlName="rue"
-                 >
+          <p> {{ rue }}</p>
         </div>
 
       </div>
@@ -141,15 +137,7 @@
 
         <div class="col-md-6 mb-3">
           <label for="">Code Postal</label>
-          <input type="number"
-                 class="form-control"
-                 placeholder="codePostal"
-                 formControlName="codePostal"
-                 [ngClass] ="{ 'is-invalid' : errorMsg.codePostal }"
-          >
-          <div class="invalid-feedback">
-            {{ errorMsg.codePostal }}
-          </div>
+          <p> {{ codePostal}}</p>
 
         </div>
 

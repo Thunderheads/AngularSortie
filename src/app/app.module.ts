@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { SortieComponent } from './sortie/sortie.component';
 import { AfficherUserComponent } from './sortie/afficher-user/afficher-user.component';
 import { ModifierUserComponent } from './sortie/modifier-user/modifier-user.component';
+import { HomeTableComponent } from './sortie/home/home-table/home-table.component';
 
 registerLocaleData(localFr, 'fr')
 
@@ -35,6 +36,7 @@ registerLocaleData(localFr, 'fr')
     SortieComponent,
     AfficherUserComponent,
     ModifierUserComponent,
+    HomeTableComponent,
 
   ],
   imports: [

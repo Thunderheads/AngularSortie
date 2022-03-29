@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  public pseudo : string;
   constructor() { }
 
   ngOnInit(): void {
-    console.log("coucou")
+     this.pseudo = JSON.parse(sessionStorage.getItem('user')!).nom
   }
 
 }

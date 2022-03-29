@@ -9,5 +9,5 @@ export interface IUser{
   telephone : string;
   mail : string;
   actif : boolean;
-  campus : ICampus[];
+  campus : ICampus;
 }

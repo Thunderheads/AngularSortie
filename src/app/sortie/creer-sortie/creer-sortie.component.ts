@@ -12,6 +12,7 @@ import {CampusData} from "../../../services/api/campus.data";
 import {ICampus} from "../../../modele/interface/ICampus";
 import {ErreurMessage} from "../../../services/erreur/erreurMessage";
 import {debounceTime} from "rxjs";
+import {IUser} from "../../../modele/interface/IUser";
 
 
 
@@ -38,16 +39,15 @@ export class CreerSortieComponent implements OnInit {
   public postId : number;
   public lstLieux : ILieu[] = [];
   public lstCampus : ICampus[] = [];
+  public rue : string;
+  public codePostal : string;
   public errorMsg = {
     nom : "",
     dateDebut : "",
     dateLimiteInscription : "",
     nbInscriptionsMax : "",
-
     duree : "",
-    codePostal :  "",
     infosSortie : "",
-    rue : "",
     latitude: "",
     ville : "",
     campus : "",
@@ -98,7 +98,7 @@ export class CreerSortieComponent implements OnInit {
       latitude: '',
       //longitude: '',
       ville : ['',[Validators.required]],
-      campus : ['0',[]],
+      campus : [JSON.parse(sessionStorage.getItem('user')!).campus.id,[]],
       // on passe la value de l'option a selectionner
       lieu : ['0',[]],
 
@@ -153,15 +153,7 @@ export class CreerSortieComponent implements OnInit {
       );});
 
 
-    // input codePostal
-    this.registerForm.get('codePostal')!.valueChanges.pipe(
-      debounceTime(1000)
-    ).subscribe( val  => {
-      console.log(this.registerForm.get('codePostal')!.errors)
-      this.errorMsg.codePostal = this.errorMessages.setMessage(
-        this.registerForm.get('codePostal')!,
-        this.errorMessages.validationCodePostal
-      );});
+
 
     // input duree
     // input infosSortie
@@ -206,8 +198,8 @@ export class CreerSortieComponent implements OnInit {
         data =>{
           console.log(data)
           this.registerForm.patchValue({ville : data.ville.nom})
-          this.registerForm.patchValue({rue : data.rue})
-          this.registerForm.patchValue({codePostal : data.ville.codePostal})
+          this.rue = data.rue
+          this.codePostal = data.ville.codePostal
           this.registerForm.patchValue({latitude : data.latitude})
         }
 
