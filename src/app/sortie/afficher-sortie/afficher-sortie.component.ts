@@ -25,9 +25,7 @@ export class AfficherSortieComponent implements OnInit {
    this.sd.getSortie('http://localhost/APISortie/public/api/sortie').
     subscribe(
       data => {
-        console.log(data);
-        // @ts-ignore
-        for( let element : ISortie of data){
+        for( let element  of data){
           this.datas.push(element);
         }
 

@@ -46,7 +46,8 @@ registerLocaleData(localFr, 'fr')
     HttpClientModule,
     FormsModule
   ],
-  providers: [SortieData],
+  providers: [SortieData,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

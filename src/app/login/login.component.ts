@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit{
     // partie déconnexion
     if(sessionStorage.getItem('user') !== null){
       sessionStorage.removeItem('user')
-      console.log( sessionStorage.getItem('user'))
+
     }
   }
 

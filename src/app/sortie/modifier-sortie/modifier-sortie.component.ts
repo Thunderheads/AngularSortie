@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SortieData } from 'src/services/api/sortie.data';
-import { ISortie } from 'src/modele/ISortie';
+
 import { catchError } from 'rxjs';
+import {ISortie} from "../../../modele/interface/ISortie";
 
 @Component({
   selector: 'app-modifier-sortie',

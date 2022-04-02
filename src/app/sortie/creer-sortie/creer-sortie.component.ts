@@ -1,10 +1,6 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
-import {Sortie} from "../../../modele/Sortie";
+import {Component, OnInit} from '@angular/core';
+
 import { FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {Lieu} from "../../../modele/Lieu";
-import {Campus} from "../../../modele/Campus";
-import {Etat} from "../../../modele/Etat";
-import {Ville} from "../../../modele/Ville";
 import {SortieData} from "../../../services/api/sortie.data";
 import {ILieu} from "../../../modele/interface/ILieu";
 import {LieuData} from "../../../services/api/lieu.data";
@@ -12,13 +8,6 @@ import {CampusData} from "../../../services/api/campus.data";
 import {ICampus} from "../../../modele/interface/ICampus";
 import {ErreurMessage} from "../../../services/erreur/erreurMessage";
 import {debounceTime} from "rxjs";
-import {IUser} from "../../../modele/interface/IUser";
-
-
-
-
-
-
 
 @Component({
   selector: 'app-creer-sortie',
@@ -53,19 +42,12 @@ export class CreerSortieComponent implements OnInit {
     campus : "",
     lieu : "",
   }
-
-
-  public sortie : Sortie = new Sortie();
   constructor(private formBuilder : FormBuilder,
               private sd: SortieData,
               private lieuData :LieuData,
               private campusData : CampusData,
               private errorMessages :ErreurMessage) {
-      // creation des differentes instances des objets
-      this.sortie.lieu = new Lieu();
-      this.sortie.lieu.ville = new Ville();
-      this.sortie.etat = new Etat();
-      this.sortie.campus = new Campus();
+
   }
 
 
@@ -91,13 +73,11 @@ export class CreerSortieComponent implements OnInit {
       nbInscriptionsMax : ['9',[Validators.min(1), Validators.max(1000),  Validators.required]],
       duree : ['45',[Validators.required]],
       //utilisation d'une regex pour le code postal.
-      codePostal : ['',[Validators.required , Validators.pattern('(?:0[1-9]|[1-8]\\d|9[0-8])\\d{3}')]],
       infosSortie : ['coucou pas d\'infos,',[Validators.required]],
 
-      rue : ['',[Validators.required]],
       latitude: '',
       //longitude: '',
-      ville : ['',[Validators.required]],
+      ville : '',
       campus : [JSON.parse(sessionStorage.getItem('user')!).campus.id,[]],
       // on passe la value de l'option a selectionner
       lieu : ['0',[]],
@@ -165,24 +145,6 @@ export class CreerSortieComponent implements OnInit {
   }
 
 
-  // generer des valeurs par défaut
-  public defaultValueForm(){
-    //tout les valeurs doivent etre renseignées avec setValue sinon utiliser patchValue
-    this.registerForm.setValue({
-      nom : 'banana',
-      //campus : "",
-      ville : '',
-      lieu : 'Choisir un lieu',
-      nbInscriptionsMax : 9,
-      rue : "che poa",
-      duree : 60,
-      codePostal : 35000,
-      infosSortie : "sortie cool",
-      latitude: "",
-      //longitude: "",
-
-    })
-  }
 
 
 
@@ -262,6 +224,12 @@ export class CreerSortieComponent implements OnInit {
 
   }
 
+  /**
+   * Fonction qui teste si la sortie est crée en fonction de la réponse de l"api (c'est utilisé pour afficher un message d'erreur
+   * En mode alerte
+   * @param value
+   * @private
+   */
   private isCreated(value : number){
     if (value !== undefined){
       this.isDone.isCreate = true;
